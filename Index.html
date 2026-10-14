@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="ko" class="lay-tablet">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>도형 친구들 K1~K4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#DDF0FF;--dot:#BCDDF6;--ink:#1D2B53;--sun:#FFD23F;--grass:#3BB273;--sky:#5CC8FF;--coral:#FF5A5F;--soft:#F2F8FF;--okbg:#CFF5DE;--nobg:#FFD9DA}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:'Gowun Dodum','Jua',sans-serif;color:var(--ink);background:var(--bg) radial-gradient(var(--dot) 2px,transparent 2px) 0 0/22px 22px;min-height:100vh;font-size:18px;user-select:none;-webkit-user-select:none}
+h1,h2,h3,.jua,.btn,.chip,.opt,.big{font-family:'Jua',sans-serif;font-weight:400}
+h1{font-size:34px;margin:6px 0}h2{font-size:26px;margin:6px 0}h3{margin:6px 0}
+#app{max-width:1000px;margin:0 auto;padding:18px 18px 60px}
+html.lay-mobile #app{max-width:440px;padding:12px 12px 50px}
+.card{background:#fff;border:3px solid var(--ink);border-radius:22px;padding:16px;box-shadow:0 6px 0 var(--ink);margin:12px 0}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row.c{justify-content:center}.row.sb{justify-content:space-between}
+.btn{display:inline-block;padding:12px 24px;border-radius:18px;border:3px solid var(--ink);background:var(--sun);color:var(--ink);font-size:22px;box-shadow:0 5px 0 var(--ink);cursor:pointer}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.btn[disabled]{opacity:.4;pointer-events:none}
+.btn.green{background:var(--grass);color:#fff}.btn.white{background:#fff}.btn.sky{background:var(--sky)}.btn.small{padding:6px 14px;font-size:16px;box-shadow:0 3px 0 var(--ink)}.btn.big{font-size:28px;padding:16px 34px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.dots{display:flex;gap:6px;flex-wrap:wrap}.dot{width:16px;height:16px;border-radius:50%;border:3px solid var(--ink);background:#fff}.dot.cur{background:var(--sun);transform:scale(1.25)}.dot.ok{background:var(--grass)}.dot.no{background:var(--coral)}
+.chip{display:inline-block;background:var(--sky);border:2px solid var(--ink);border-radius:14px;padding:2px 12px;font-size:15px}.chip.warn{background:#FFE0A3}
+.qtext{font-family:'Jua';font-size:26px;margin:8px 0}
+html.lay-mobile .qtext{font-size:22px}
+.say{border:2px solid var(--ink);background:#fff;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer}
+.stage{background:var(--soft);border:3px dashed var(--dot);border-radius:18px;padding:10px;display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;margin:8px 0}
+.opts{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.opt{background:#fff;border:4px solid var(--ink);border-radius:18px;padding:8px;min-width:64px;font-size:26px;cursor:pointer;box-shadow:0 4px 0 var(--ink);display:flex;align-items:center;justify-content:center;gap:6px}
+.opt.sel{background:#FFF3B8;transform:translateY(-3px);border-color:#E89F00}
+.opt.good{background:var(--okbg);border-color:var(--grass)}.opt.bad{background:var(--nobg);border-color:var(--coral)}
+.opt svg{display:block}
+.grid{width:210px;height:210px;background:#fff;border-radius:14px;border:2px solid var(--dot)}
+html.lay-mobile .grid{width:44vw;max-width:170px;height:auto}
+.scene{width:320px;height:320px;max-width:100%;background:#fff;border-radius:14px;border:2px solid var(--dot)}
+html.lay-mobile .scene{width:100%;height:auto}
+.scat{width:420px;max-width:100%;background:#fff;border-radius:14px;border:2px solid var(--dot)}
+html.lay-mobile .scat{width:100%}
+.papers{width:240px;height:240px;max-width:100%}
+.bins{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;width:100%}
+.bin{flex:1;min-width:92px;min-height:110px;background:#fff;border:3px solid var(--ink);border-radius:16px;padding:6px;text-align:center;cursor:pointer}
+.bin .bl{font-family:'Jua';font-size:22px}.bin .cont{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;min-height:44px}
+.cell{cursor:pointer;border-radius:12px;padding:2px;border:3px solid transparent}.cell.sel{border-color:#E89F00;background:#FFF3B8}.cell.bad{border-color:var(--coral);background:var(--nobg)}.cell.good{border-color:var(--grass);background:var(--okbg)}
+.fb{border:3px solid var(--ink);border-radius:18px;padding:12px;margin:10px 0;display:flex;gap:12px;align-items:center}
+.fb.ok{background:var(--okbg)}.fb.no{background:var(--nobg)}
+.fb .m{flex:none}.fb .big{font-size:24px}
+.step{display:flex;align-items:center;gap:6px;background:#fff;border:3px solid var(--ink);border-radius:16px;padding:4px 8px}
+.step b{font-family:'Jua';font-size:28px;min-width:30px;text-align:center;font-weight:400}
+.step button{width:42px;height:42px;border-radius:50%;border:3px solid var(--ink);background:var(--sun);font-size:24px;font-family:'Jua';cursor:pointer}
+.world{display:grid;grid-template-columns:90px repeat(5,1fr);gap:8px;align-items:center}
+html.lay-mobile .world{grid-template-columns:62px repeat(5,1fr);gap:5px}
+.wd{aspect-ratio:1;border-radius:50%;border:3px solid var(--ink);background:#fff;display:flex;align-items:center;justify-content:center;font-family:'Jua';font-size:18px}
+.wd.ok{background:var(--grass);color:#fff}.wd.cur{background:var(--sun);transform:scale(1.15);animation:bob 1s infinite alternate}
+@keyframes bob{to{transform:scale(1.28)}}
+.lock{opacity:.55}
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.dayb{font-family:'Jua';font-size:24px;border:3px solid var(--ink);border-radius:16px;background:#fff;padding:8px 0;cursor:pointer;box-shadow:0 4px 0 var(--ink);color:var(--ink)}
+.dayb small{display:block;font-size:12px;min-height:14px}.dayb.ok{background:var(--okbg)}
+.dayb:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.cubes,.cg{display:block}
+.tgsvg{width:420px;max-width:100%;height:auto;touch-action:none;display:block;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.stage:has(.tgsvg){touch-action:none}
+.pc{cursor:grab}.pc polygon{stroke:#1D2B53;stroke-width:.08;stroke-linejoin:round}
+.laysw{position:fixed;right:8px;bottom:8px;z-index:5;font-size:14px}
+.pbtn{display:flex;gap:10px;align-items:center;width:100%;text-align:left;margin:8px 0}
+.book{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
+html.lay-mobile .book{grid-template-columns:repeat(3,1fr);gap:8px}
+.stk{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:6px;text-align:center;position:relative}
+.stk img{width:100%;aspect-ratio:1;display:block;border-radius:10px}
+.stk.rare{border-color:#E89F00;box-shadow:0 0 0 3px #FFE27A,0 0 14px #FFD23F}
+.stk.empty{opacity:.4;display:flex;align-items:center;justify-content:center;aspect-ratio:1;font-size:34px}
+.rv{display:flex;flex-direction:column;align-items:center;gap:14px;padding:6px}
+.reveal{width:230px;height:300px;perspective:900px;position:relative;margin:12px auto}
+.flip{width:100%;height:100%;position:relative;transform-style:preserve-3d;cursor:pointer}
+.flip.on{transform:rotateY(180deg)}
+.flip.spin{animation:cs 1.9s cubic-bezier(.3,.1,.3,1) forwards}
+@keyframes cs{0%{transform:rotateY(0) scale(1)}50%{transform:rotateY(540deg) scale(1.2)}100%{transform:rotateY(900deg) scale(1)}}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:4px solid var(--ink);border-radius:22px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;box-shadow:0 6px 0 var(--ink)}
+.face.front{background:repeating-linear-gradient(45deg,#5CC8FF,#5CC8FF 14px,#8FDAFF 14px,#8FDAFF 28px);font-size:80px;color:#fff}
+.face.back{transform:rotateY(180deg)}
+.face.back img{width:100%;border-radius:14px;background:var(--soft)}
+.aura{position:absolute;inset:-18px;border-radius:34px;background:conic-gradient(#FFD23F,#FF7EB6,#5CC8FF,#3BB273,#FFD23F);filter:blur(14px);opacity:0;z-index:-1;transition:opacity .5s}
+.aura.on{opacity:.85;animation:rot 4s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.spk{position:absolute;font-size:26px;pointer-events:none;opacity:0}
+.spk.burst{animation:burst 1.3s ease-out forwards}
+@keyframes burst{0%{opacity:1;transform:translate(0,0) scale(.3)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.3) rotate(200deg)}}
+.late{opacity:0;animation:fin .5s 2s forwards}
+@keyframes fin{to{opacity:1}}
+.mas{animation:hop 2.4s infinite}
+@keyframes hop{0%,90%,100%{transform:translateY(0)}95%{transform:translateY(-8px)}}
+.small{font-size:14px;opacity:.8}
+input[type=text]{font-family:'Jua';font-size:24px;border:3px solid var(--ink);border-radius:14px;padding:10px;width:100%}
+select{font-family:'Jua';font-size:18px;padding:6px;border:3px solid var(--ink);border-radius:10px}
+.hist{max-height:200px;overflow:auto;font-size:15px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<button class="btn small white laysw" id="laysw"></button>
+<script>
+/* ===== utils ===== */
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function mkRng(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const RR=r=>({r,int:(a,b)=>a+Math.floor(r()*(b-a+1)),pick:a=>a[Math.floor(r()*a.length)],shuf:a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}});
+const COL={red:'#FF5A5F',blue:'#4D96FF',yellow:'#FFD23F',green:'#3BB273',purple:'#A78BFA',orange:'#FF9F43',pink:'#FF7EB6'};
+const CKEYS=Object.keys(COL);
+const CNAME={red:'빨간',blue:'파란',yellow:'노란',green:'초록',purple:'보라',orange:'주황',pink:'분홍'};
+const TN={sq:'네모',tri:'세모',cir:'동그라미'},TS={sq:'□',tri:'△',cir:'○'},TYPES=['sq','tri','cir'];
+const INK='#1D2B53';
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+
+/* ===== storage ===== */
+let DB;try{DB=JSON.parse(localStorage.getItem('shp1'))}catch(e){}
+DB=DB||{profiles:{},cur:null,lay:innerWidth<700?'mobile':'tablet',tts:true};
+const save=()=>{try{localStorage.setItem('shp1',JSON.stringify(DB))}catch(e){}};
+const P=()=>DB.profiles[DB.cur];
+
+/* ===== svg shapes ===== */
+function inner(t,fill,extra=''){
+  const a=`fill="${fill}" stroke="${INK}" stroke-width="5" stroke-linejoin="round" ${extra}`;
+  if(t==='sq')return`<rect x="14" y="14" width="72" height="72" rx="6" ${a}/>`;
+  if(t==='tri')return`<polygon points="50,10 92,86 8,86" ${a}/>`;
+  return`<circle cx="50" cy="50" r="39" ${a}/>`;
+}
+const shp=(t,c,s=56,rot=0)=>`<svg width="${s}" height="${s}" viewBox="0 0 100 100"><g transform="rotate(${rot} 50 50)">${inner(t,c)}</g></svg>`;
+function mascot(kind,mood='happy',size=80){
+  const fill={sq:'#4D96FF',tri:'#FFD23F',cir:'#FF7EB6'}[kind]||'#4D96FF';
+  const cy=kind==='tri'?62:50;
+  const mouth=mood==='sad'?`M40 ${cy+14} Q50 ${cy+6} 60 ${cy+14}`:`M40 ${cy+8} Q50 ${cy+20} 60 ${cy+8}`;
+  return`<svg width="${size}" height="${size}" viewBox="0 0 100 100" class="mas">${inner(kind,fill)}<circle cx="38" cy="${cy-4}" r="4.5" fill="${INK}"/><circle cx="62" cy="${cy-4}" r="4.5" fill="${INK}"/><circle cx="31" cy="${cy+6}" r="4.5" fill="#FF9AA2" opacity=".7"/><circle cx="69" cy="${cy+6}" r="4.5" fill="#FF9AA2" opacity=".7"/><path d="${mouth}" stroke="${INK}" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>`;
+}
+const MNAME={sq:'네모',tri:'세모',cir:'동글이'};
+/* pictures with attributes */
+const ATTR={house:{roof:'c',win:'c'},tree:{fruit:'c',n:'n'},kid:{flag:'c',shirt:'c'},fish:{body:'c',tail:'c'}};
+const ANAME={roof:'지붕 색',win:'창문 색',fruit:'열매 색',n:'열매 수',flag:'깃발 색',shirt:'옷 색',body:'몸 색',tail:'꼬리 색'};
+function pic(kind,a,s=100){
+  const st=`stroke="${INK}" stroke-width="4" stroke-linejoin="round"`;
+  let b='';
+  if(kind==='house')b=`<rect x="20" y="46" width="60" height="44" fill="#FFE8B0" ${st}/><polygon points="12,48 50,12 88,48" fill="${COL[a.roof]}" ${st}/><rect x="40" y="60" width="20" height="22" fill="${COL[a.win]}" ${st}/>`;
+  if(kind==='tree'){const f=[[38,30],[62,34],[46,52],[64,54]].slice(0,a.n).map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="6" fill="${COL[a.fruit]}" ${st}/>`).join('');b=`<rect x="44" y="62" width="12" height="28" fill="#B07A4A" ${st}/><circle cx="50" cy="40" r="30" fill="#8EDB9B" ${st}/>${f}`}
+  if(kind==='kid')b=`<line x1="72" y1="46" x2="72" y2="10" stroke="${INK}" stroke-width="4"/><polygon points="72,10 94,18 72,26" fill="${COL[a.flag]}" ${st}/><circle cx="46" cy="26" r="15" fill="#FFD9B0" ${st}/><rect x="30" y="42" width="32" height="30" rx="6" fill="${COL[a.shirt]}" ${st}/><rect x="34" y="72" width="9" height="18" fill="#556" ${st}/><rect x="49" y="72" width="9" height="18" fill="#556" ${st}/>`;
+  if(kind==='fish')b=`<ellipse cx="42" cy="50" rx="30" ry="20" fill="${COL[a.body]}" ${st}/><polygon points="68,50 94,30 94,70" fill="${COL[a.tail]}" ${st}/><circle cx="30" cy="44" r="4" fill="${INK}"/>`;
+  return`<svg width="${s}" height="${s}" viewBox="0 0 100 100">${b}</svg>`;
+}
+const rv=(R,k,not)=>{let v,g=0;do{v=ATTR_T(k)==='n'?R.pick([1,2,3,4]):R.pick(CKEYS)}while(v===not&&g++<50);return v};
+const ATTR_T=k=>k==='n'?'n':'c';
+
+/* grid helpers */
+const gGeo=n=>{const st=n<=3?60:46,pad=26;return{st,pad,size:pad*2+(n-1)*st}};
+const nXY=(n,i)=>{const g=gGeo(n);return[g.pad+(i%n)*g.st,g.pad+Math.floor(i/n)*g.st]};
+function mkEdges(n){const E=[];for(let r=0;r<n;r++)for(let c=0;c<n-1;c++)E.push([r*n+c,r*n+c+1]);for(let r=0;r<n-1;r++)for(let c=0;c<n;c++)E.push([r*n+c,(r+1)*n+c]);return E}
+function gridSVG(n,on,o={}){
+  const E=mkEdges(n),g=gGeo(n);let s=`<svg viewBox="0 0 ${g.size} ${g.size}" class="grid">`,hit='';
+  E.forEach((e,i)=>{const[x1,y1]=nXY(n,e[0]),[x2,y2]=nXY(n,e[1]);const isOn=on.includes(i);let col=isOn?'#4D96FF':null,dash='';
+    if(o.rev){const t=o.target.includes(i);if(isOn&&!t)col='#FF5A5F';if(!isOn&&t){col='#3BB273';dash='stroke-dasharray="7 7"'}}
+    if(col)s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="9" stroke-linecap="round" ${dash}/>`;
+    if(o.hit)hit+=`<line data-act="tap" data-v="${i}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(0,0,0,0.001)" stroke-width="${g.st*0.6}" stroke-linecap="round" style="cursor:pointer"/>`;});
+  for(let i=0;i<n*n;i++){const[x,y]=nXY(n,i);s+=`<circle cx="${x}" cy="${y}" r="6" fill="${INK}"/>`}
+  return s+hit+'</svg>';
+}
+function randPath(R,n,k){
+  const E=mkEdges(n);
+  for(let tries=0;tries<200;tries++){
+    let node=R.int(0,n*n-1);const used=[];
+    while(used.length<k){const c=E.map((e,i)=>({e,i})).filter(x=>!used.includes(x.i)&&(x.e[0]===node||x.e[1]===node));if(!c.length)break;const p=R.pick(c);used.push(p.i);node=p.e[0]===node?p.e[1]:p.e[0]}
+    if(used.length===k)return used;
+  }
+  return[0,1,2].slice(0,k);
+}
+/* scatter */
+function scatter(R,counts,colorMode){
+  const cells=[];for(let r=0;r<3;r++)for(let c=0;c<6;c++)cells.push([c,r]);
+  const list=[];TYPES.forEach(t=>{for(let i=0;i<(counts[t]||0);i++)list.push({t})});
+  const pos=R.shuf(cells);
+  return R.shuf(list).map((o,i)=>({t:o.t,c:colorMode?R.pick(CKEYS):{sq:COL.blue,tri:COL.yellow,cir:COL.pink}[o.t],x:pos[i][0]*50+7+R.int(-4,4),y:pos[i][1]*50+7+R.int(-4,4),rot:R.int(-20,20)})).map(o=>(o.c=COL[o.c]||o.c,o));
+}
+function scatSVG(list,mark){
+  let n=0,s='<svg viewBox="0 0 300 150" class="scat">';
+  list.forEach(o=>{s+=`<svg x="${o.x}" y="${o.y}" width="36" height="36" viewBox="0 0 100 100"><g transform="rotate(${o.rot} 50 50)">${inner(o.t,o.c)}</g></svg>`;
+    if(mark&&o.t===mark){n++;s+=`<circle cx="${o.x+18}" cy="${o.y+20}" r="10" fill="#fff" stroke="#FF5A5F" stroke-width="2"/><text x="${o.x+18}" y="${o.y+25}" text-anchor="middle" font-size="14" font-weight="bold" fill="#FF5A5F">${n}</text>`}});
+  return s+'</svg>';
+}
+const cnt=(list,t)=>list.filter(o=>o.t===t).length;
+const optCls=(sel,i,ans,rev)=>(rev&&i===ans?'good':rev&&sel===i&&sel!==ans?'bad':(sel===i?'sel':''));
+
+/* ===== problem types ===== */
+const T={};
+T.same={cat:'1주 · 같은 모양',say:'똑같은 그림을 찾아 눌러요.',q:'똑같은 그림을 찾아요',
+  gen(R,l){const kind=R.pick(Object.keys(ATTR)),keys=Object.keys(ATTR[kind]),base={};keys.forEach(k=>base[k]=rv(R,k));
+    const n=l<=2?3:4,opts=[{...base}],seen=new Set([JSON.stringify(base)]);let g=0;
+    while(opts.length<n&&g++<300){const o={...base};(l<=2?keys:[R.pick(keys)]).forEach(k=>o[k]=rv(R,k,base[k]));const s=JSON.stringify(o);if(!seen.has(s)){seen.add(s);opts.push(o)}}
+    const sh=R.shuf(opts.map((o,i)=>({o,c:i===0})));return{kind,base,opts:sh.map(x=>x.o),ans:sh.findIndex(x=>x.c),st:{sel:null}}},
+  view(it,rev){return`<div class="stage">${pic(it.kind,it.base,120)}</div><div class="opts">${it.opts.map((o,i)=>`<button class="opt ${optCls(it.st.sel,i,it.ans,rev)}" data-act="tap" data-v="${i}">${pic(it.kind,o,92)}</button>`).join('')}</div>`},
+  tap(it,v){it.st.sel=+v},can:it=>it.st.sel!=null,ok:it=>it.st.sel===it.ans,
+  exp(it){const o=it.opts[it.st.sel],d=Object.keys(o).filter(k=>o[k]!==it.base[k]).map(k=>ANAME[k]);return`내가 고른 그림은 ${d.join('과 ')}이 달라요. 초록 테두리 그림이 똑같아요!`}};
+
+T.copy={cat:'1주 · 따라 그리기',say:'왼쪽 모양과 똑같이 선을 이어 보세요.',q:'똑같이 선을 이어요',
+  gen(R,l){const n=l===3?4:3,k=l===1?R.int(3,4):l===2?R.int(5,6):R.int(6,7);return{n,target:randPath(R,n,k),st:{on:[]}}},
+  view(it,rev){return`<div class="stage"><div>${gridSVG(it.n,it.target)}<div class="small" style="text-align:center">이렇게!</div></div><div>${gridSVG(it.n,it.st.on,{hit:!rev,rev,target:it.target})}<div class="small" style="text-align:center">여기에 그려요</div></div></div>`},
+  tap(it,v){v=+v;const a=it.st.on,i=a.indexOf(v);i<0?a.push(v):a.splice(i,1)},
+  can:it=>it.st.on.length>0,ok:it=>it.st.on.length===it.target.length&&it.target.every(x=>it.st.on.includes(x)),
+  exp:()=>'초록 점선이 빠진 선이고, 빨간 선은 없어야 하는 선이에요.'};
+
+const SCENES={
+ house:{n:'집',p:[['sq',55,95,90,75],['tri',45,45,110,55],['sq',90,125,22,45],['sq',66,108,20,20],['sq',118,108,20,20],['cir',160,15,28,28],['cir',16,150,32,28],['cir',152,148,32,28],['tri',165,95,26,45]]},
+ robot:{n:'로봇',p:[['sq',65,25,70,55],['sq',55,85,90,70],['tri',88,4,24,22],['cir',80,42,14,14],['cir',106,42,14,14],['tri',94,60,12,12],['sq',28,95,24,16],['sq',148,95,24,16],['sq',68,158,24,32],['sq',108,158,24,32],['cir',92,105,16,16],['cir',92,128,16,16]]},
+ train:{n:'기차',p:[['tri',20,45,50,50],['tri',70,60,50,40],['sq',15,105,48,40],['sq',70,105,48,40],['sq',125,80,50,65],['tri',120,58,60,24],['cir',24,138,22,22],['cir',84,138,22,22],['cir',132,138,22,22],['cir',152,138,22,22],['cir',150,10,30,30]]},
+ rocket:{n:'로켓',p:[['tri',80,15,40,45],['sq',80,58,40,85],['tri',52,105,30,40],['tri',118,105,30,40],['tri',88,145,24,35],['cir',91,72,18,18],['cir',91,98,18,18],['cir',20,30,14,14],['cir',160,40,14,14]]},
+ tree:{n:'트리',p:[['tri',60,25,80,40],['tri',50,60,100,45],['tri',40,98,120,50],['sq',90,148,20,38],['sq',20,160,30,28],['sq',150,160,30,28],['cir',80,48,12,12],['cir',108,80,12,12],['cir',70,118,12,12],['cir',116,125,12,12]]}};
+function partSVG(p,fill,extra=''){const[t,x,y,w,h]=p;const a=`fill="${fill}" stroke="${INK}" stroke-width="3" stroke-linejoin="round" ${extra}`;
+  if(t==='sq')return`<rect x="${x}" y="${y}" width="${w}" height="${h}" ${a}/>`;
+  if(t==='tri')return`<polygon points="${x+w/2},${y} ${x+w},${y+h} ${x},${y+h}" ${a}/>`;
+  return`<ellipse cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}" ${a}/>`}
+T.paint={cat:'2주 · □△○ 알기',say:null,
+  gen(R,l){const key=R.pick(Object.keys(SCENES)),sc=SCENES[key];const ts=TYPES.filter(t=>sc.p.filter(p=>p[0]===t).length>=2);const t=R.pick(ts);const col=R.pick(CKEYS);
+    return{scene:key,t,col,target:sc.p.map((p,i)=>p[0]===t?i:-1).filter(i=>i>=0),st:{on:[]}}},
+  q:it=>`그림 속 ${TS[it.t]}(${TN[it.t]})을 모두 ${CNAME[it.col]}색으로 칠해요`,
+  view(it,rev){const sc=SCENES[it.scene];let s='<div class="stage"><svg viewBox="0 0 200 200" class="scene">';
+    sc.p.forEach((p,i)=>{const on=it.st.on.includes(i),t=it.target.includes(i);let fill=on?COL[it.col]:'#EEF3FA',ex=`data-act="tap" data-v="${i}" style="cursor:pointer"`;
+      if(rev){if(t&&!on){fill=COL[it.col];ex='opacity=".5" stroke-dasharray="5 4"'}else if(on&&!t)ex+=' stroke="#FF5A5F"'}
+      s+=partSVG(p,fill,ex)});
+    return s+'</svg></div>'},
+  tap(it,v){v=+v;const a=it.st.on,i=a.indexOf(v);i<0?a.push(v):a.splice(i,1)},
+  can:it=>it.st.on.length>0,ok:it=>it.st.on.length===it.target.length&&it.target.every(x=>it.st.on.includes(x)),
+  exp:it=>`${TS[it.t]} 모양은 모두 ${it.target.length}개예요. 반투명한 것은 빠뜨린 곳이에요.`};
+
+T.odd={cat:'2주 · 다른 모양 찾기',say:'모양이 다른 하나를 찾아 눌러요.',q:'다른 모양 하나를 찾아요',
+  gen(R,l){const a=R.pick(TYPES),b=R.pick(TYPES.filter(t=>t!==a)),n=l===1?4:5,odd=R.int(0,n-1),c0=R.pick(CKEYS);
+    return{a,b,odd,items:Array.from({length:n},(_,i)=>({t:i===odd?b:a,c:l===1?c0:R.pick(CKEYS),rot:l===3?R.int(-40,40):0})),st:{sel:null}}},
+  view(it,rev){return`<div class="opts">${it.items.map((o,i)=>`<button class="opt ${optCls(it.st.sel,i,it.odd,rev)}" data-act="tap" data-v="${i}">${shp(o.t,COL[o.c],64,o.rot)}</button>`).join('')}</div>`},
+  tap(it,v){it.st.sel=+v},can:it=>it.st.sel!=null,ok:it=>it.st.sel===it.odd,
+  exp:it=>`나머지는 모두 ${TS[it.a]}(${TN[it.a]})인데 이것만 ${TS[it.b]}(${TN[it.b]})이에요.`};
+
+T.sort={cat:'2주 · 모양 모으기',say:'모양을 눌러 알맞은 칸에 넣어요.',q:'같은 모양끼리 모아요',
+  gen(R,l){const n=l===1?5:l===2?6:8;let ts=[];do{ts=Array.from({length:n},()=>R.pick(TYPES))}while(TYPES.some(t=>!ts.includes(t)));
+    return{shapes:ts.map(t=>({t,c:R.pick(CKEYS),rot:l===3?R.int(-40,40):0})),st:{asg:Array(n).fill(null),sel:null}}},
+  view(it,rev){const{asg,sel}=it.st;
+    const tray=it.shapes.map((o,i)=>asg[i]?'':`<div class="cell ${sel===i?'sel':''}" data-act="tap" data-v="s${i}">${shp(o.t,COL[o.c],54,o.rot)}</div>`).join('');
+    const bins=TYPES.map(t=>`<div class="bin" data-act="tap" data-v="b${t}"><div class="bl">${TS[t]} ${TN[t]}</div><div class="cont">${it.shapes.map((o,i)=>asg[i]===t?`<div class="cell ${rev?(o.t===t?'good':'bad'):''}" data-act="tap" data-v="u${i}">${shp(o.t,COL[o.c],40,o.rot)}</div>`:'').join('')}</div></div>`).join('');
+    return`<div class="stage">${tray||'<span class="jua">모두 넣었어요!</span>'}</div><div class="bins">${bins}</div>`},
+  tap(it,v){const s=it.st;if(v[0]==='s')s.sel=s.sel===+v.slice(1)?null:+v.slice(1);else if(v[0]==='b'){if(s.sel!=null){s.asg[s.sel]=v.slice(1);s.sel=null}}else if(v[0]==='u'){s.asg[+v.slice(1)]=null}},
+  can:it=>it.st.asg.every(Boolean),ok:it=>it.shapes.every((o,i)=>it.st.asg[i]===o.t),
+  exp:it=>{const w=it.shapes.filter((o,i)=>it.st.asg[i]!==o.t).length;return`잘못 들어간 모양이 ${w}개 있어요(빨간 테두리). 세모는 뾰족한 곳이 3개, 네모는 4개, 동그라미는 뾰족한 곳이 없어요.`}};
+
+const ORD=['','맨 위','위에서 두 번째'];
+T.topmost={cat:'3주 · 색종이 겹치기',prov:true,say:null,
+  gen(R,l){const k=l===1?3:4,cols=R.shuf(CKEYS).slice(0,k),ask=l===3?R.pick(['top','bottom','second']):R.pick(['top','bottom']);
+    return{cols,ask,rots:cols.map(()=>R.int(-14,14)),ans:ask==='top'?k-1:ask==='bottom'?0:k-2,st:{sel:null}}},
+  q:it=>it.ask==='top'?'맨 위에 있는 색종이는 무슨 색일까요?':it.ask==='bottom'?'맨 아래에 있는 색종이는 무슨 색일까요?':'위에서 두 번째 색종이는 무슨 색일까요?',
+  view(it,rev){const k=it.cols.length;let s=`<div class="stage"><svg viewBox="0 0 200 200" class="papers">`;
+    it.cols.forEach((c,i)=>{s+=`<rect x="${28+i*18}" y="${28+i*14}" width="90" height="90" rx="4" fill="${COL[c]}" stroke="${INK}" stroke-width="3" transform="rotate(${it.rots[i]} ${73+i*18} ${73+i*14})"/>`});
+    s+='</svg></div><div class="opts">'+it.cols.map((c,i)=>i).sort((a,b)=>it.cols[a]<it.cols[b]?-1:1).map(i=>`<button class="opt ${optCls(it.st.sel,i,it.ans,rev)}" data-act="tap" data-v="${i}">${shp('sq',COL[it.cols[i]],56)}</button>`).join('')+'</div>';return s},
+  tap(it,v){it.st.sel=+v},can:it=>it.st.sel!=null,ok:it=>it.st.sel===it.ans,
+  exp:it=>'다른 색종이에 가려지지 않고 온전히 다 보이는 것이 가장 위에 있는 색종이예요.'};
+T.layers={cat:'3주 · 색종이 겹치기',prov:true,say:null,
+  gen(R,l){const n=R.int(2,l===1?3:l===2?4:5);return{n,cols:R.shuf(CKEYS).slice(0,n),ans:n,st:{sel:null}}},
+  q:()=>'색종이를 모두 몇 장 겹쳤을까요?',
+  view(it,rev){let s=`<div class="stage"><svg viewBox="0 0 200 200" class="papers">`;
+    it.cols.forEach((c,i)=>{s+=`<rect x="${24+i*22}" y="${24+i*18}" width="90" height="90" rx="4" fill="${COL[c]}" stroke="${INK}" stroke-width="3"/>`});
+    s+='</svg></div><div class="opts">'+[1,2,3,4,5,6].map(n=>`<button class="opt ${optCls(it.st.sel,n,it.ans,rev)}" data-act="tap" data-v="${n}">${n}</button>`).join('')+'</div>';return s},
+  tap(it,v){it.st.sel=+v},can:it=>it.st.sel!=null,ok:it=>it.st.sel===it.ans,
+  exp:it=>`삐죽 나온 색깔 조각을 하나씩 세어 보면 ${it.n}장이에요.`};
+
+T.countOne={cat:'4주 · 개수 세기',say:null,
+  gen(R,l){const t=R.pick(TYPES),c=R.int(2,l===1?5:7),others=TYPES.filter(x=>x!==t),cs={[t]:c};others.forEach(o=>cs[o]=R.int(1,l===1?3:4));
+    return{t,c,list:scatter(R,cs,l===3),ans:c,st:{sel:null}}},
+  q:it=>`${TS[it.t]}(${TN[it.t]})는 모두 몇 개일까요?`,
+  view(it,rev){return`<div class="stage">${scatSVG(it.list,rev?it.t:null)}</div><div class="opts">${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="opt ${optCls(it.st.sel,n,it.ans,rev)}" data-act="tap" data-v="${n}">${n}</button>`).join('')}</div>`},
+  tap(it,v){it.st.sel=+v},can:it=>it.st.sel!=null,ok:it=>it.st.sel===it.ans,
+  exp:it=>`${TN[it.t]}에 빨간 번호를 붙여 세어 보면 ${it.c}개예요.`};
+T.countAll={cat:'4주 · 개수 세기',say:null,q:()=>'모양마다 몇 개인지 세어서 +, −로 맞춰요',
+  gen(R,l){const cs={};TYPES.forEach(t=>cs[t]=R.int(1,l===1?4:6));return{cs,list:scatter(R,cs,l===3),st:{n:{sq:0,tri:0,cir:0},touched:false}}},
+  view(it,rev){return`<div class="stage">${scatSVG(it.list)}</div><div class="row c">${TYPES.map(t=>`<div class="step" style="${rev?(it.st.n[t]===it.cs[t]?'background:var(--okbg)':'background:var(--nobg)'):''}">${shp(t,{sq:COL.blue,tri:COL.yellow,cir:COL.pink}[t],34)}<button data-act="tap" data-v="${t}-1">−</button><b>${it.st.n[t]}</b><button data-act="tap" data-v="${t}+1">+</button></div>`).join('')}</div>`},
+  tap(it,v){const t=v.slice(0,v.length-2),d=v.endsWith('+1')?1:-1;it.st.n[t]=Math.max(0,Math.min(9,it.st.n[t]+d));it.st.touched=true},
+  can:it=>TYPES.some(t=>it.st.n[t]>0),ok:it=>TYPES.every(t=>it.st.n[t]===it.cs[t]),
+  exp:it=>`정답은 □ ${it.cs.sq}개, △ ${it.cs.tri}개, ○ ${it.cs.cir}개예요.`};
+T.mostLeast={cat:'4주 · 개수 세기',say:null,
+  gen(R,l){const ns=R.shuf([1,2,3,4,5,6,7]).slice(0,3),ts=R.shuf(TYPES),cs={};ts.forEach((t,i)=>cs[t]=ns[i]);const ask=R.pick(['most','least']);
+    const ans=ts.reduce((a,b)=>(ask==='most'?cs[b]>cs[a]:cs[b]<cs[a])?b:a);return{cs,ask,ans,list:scatter(R,cs,l===3),st:{sel:null}}},
+  q:it=>`가장 ${it.ask==='most'?'많은':'적은'} 모양은 무엇일까요?`,
+  view(it,rev){return`<div class="stage">${scatSVG(it.list)}</div><div class="opts">${TYPES.map(t=>`<button class="opt ${optCls(it.st.sel,t,it.ans,rev)}" data-act="tap" data-v="${t}">${shp(t,{sq:COL.blue,tri:COL.yellow,cir:COL.pink}[t],50)}${TN[t]}</button>`).join('')}</div>`},
+  tap(it,v){it.st.sel=v},can:it=>it.st.sel!=null,ok:it=>it.st.sel===it.ans,
+  exp:it=>`□ ${it.cs.sq}개, △ ${it.cs.tri}개, ○ ${it.cs.cir}개 → ${TN[it.ans]}가 가장 ${it.ask==='most'?'많아요':'적어요'}.`};
+/* ===== K2~K4 shared helpers ===== */
+const PAL=['#FF5A5F','#4D96FF','#FFD23F','#3BB273','#A78BFA','#FF9F43'];
+const SK=['box','can','ball'],SN={box:'상자',can:'통',ball:'공'};
+const OBJ={ball:['⚽','🏀','🎾','🍊'],box:['📦','🎁','🧊','📺'],can:['🥫','🥁','🧻','🔋']};
+function sol(k,c,s=64){
+  const st=`stroke="${INK}" stroke-width="4" stroke-linejoin="round"`;let b='';
+  if(k==='box')b=`<polygon points="50,12 88,30 50,48 12,30" fill="${c}" ${st}/><polygon points="12,30 50,48 50,90 12,72" fill="${c}" ${st}/><polygon points="12,30 50,48 50,90 12,72" fill="rgba(0,0,0,.14)"/><polygon points="50,48 88,30 88,72 50,90" fill="${c}" ${st}/><polygon points="50,48 88,30 88,72 50,90" fill="rgba(0,0,0,.28)"/>`;
+  if(k==='can')b=`<path d="M18 26 V72 A32 14 0 0 0 82 72 V26 Z" fill="${c}" ${st}/><ellipse cx="50" cy="26" rx="32" ry="14" fill="${c}" ${st}/><ellipse cx="50" cy="26" rx="32" ry="14" fill="rgba(255,255,255,.4)"/>`;
+  if(k==='ball')b=`<circle cx="50" cy="50" r="38" fill="${c}" ${st}/><ellipse cx="37" cy="35" rx="11" ry="6" fill="rgba(255,255,255,.55)" transform="rotate(-30 37 35)"/>`;
+  return`<svg width="${s}" height="${s}" viewBox="0 0 100 100">${b}</svg>`;
+}
+const numBtns=(it,rev,lst)=>`<div class="opts">${lst.map(n=>`<button class="opt ${optCls(it.st.sel,n,it.ans,rev)}" data-act="tap" data-v="${n}">${n}</button>`).join('')}</div>`;
+const NUM12=Array.from({length:12},(_,i)=>i+1);
+const selT={tap(it,v){it.st.sel=isNaN(+v)?v:+v},can:it=>it.st.sel!=null,ok:it=>it.st.sel===it.ans};
+const toggleT=(it,v)=>{v=+v;const a=it.st.on,i=a.indexOf(v);i<0?a.push(v):a.splice(i,1)};
+const sameSet=(a,b)=>a.length===b.length&&b.every(x=>a.includes(x));
+/* grid of cells */
+function gridCells(w,h,fn,s=30,extra=''){
+  let g=`<svg width="${w*s+8}" height="${h*s+8}" viewBox="0 0 ${w*s+8} ${h*s+8}" style="max-width:100%;height:auto">`;
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const c=fn(x,y);if(!c)continue;
+    g+=`<rect x="${x*s+4}" y="${y*s+4}" width="${s}" height="${s}" fill="${c.fill||'#fff'}" stroke="${c.stroke||INK}" stroke-width="${c.sw||2.5}" ${c.dash?'stroke-dasharray="5 4"':''} ${c.act!=null?`data-act="tap" data-v="${c.act}" style="cursor:pointer"`:''}/>`;
+    if(c.txt)g+=`<text x="${x*s+4+s/2}" y="${y*s+4+s*0.72}" text-anchor="middle" font-size="${s*0.62}" font-family="Jua" fill="${c.tc||INK}" pointer-events="none">${c.txt}</text>`}
+  return g+extra+'</svg>';
+}
+/* polyominoes */
+const normC=cs=>{const mx=Math.min(...cs.map(c=>c[0])),my=Math.min(...cs.map(c=>c[1]));return cs.map(c=>[c[0]-mx,c[1]-my]).sort((a,b)=>a[1]-b[1]||a[0]-b[0])};
+const keyOf=cs=>normC(cs).map(c=>c.join(',')).join(';');
+const rot90=cs=>normC(cs.map(([x,y])=>[-y,x]));
+const bb=cs=>({w:Math.max(...cs.map(c=>c[0]))+1,h:Math.max(...cs.map(c=>c[1]))+1});
+const has=(cs,x,y)=>cs.some(c=>c[0]===x&&c[1]===y);
+function randPoly(R,n,W,H){
+  for(let t=0;t<500;t++){let cs=[[R.int(0,W-1),R.int(0,H-1)]];
+    while(cs.length<n){const cand=[];cs.forEach(([x,y])=>[[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy])=>{const nx=x+dx,ny=y+dy;if(nx>=0&&ny>=0&&nx<W&&ny<H&&!has(cs,nx,ny))cand.push([nx,ny])}));if(!cand.length)break;cs.push(R.pick(cand))}
+    if(cs.length===n)return cs}
+  return Array.from({length:n},(_,i)=>[i%W,Math.floor(i/W)]);
+}
+const FILLC='#7DB9FF';
+const polyView=(cs,s=26,fill=FILLC)=>{const b=bb(cs);return gridCells(b.w,b.h,(x,y)=>has(cs,x,y)?{fill}:null,s)};
+/* tiling by pieces (guaranteed tileable) */
+function growPieces(R,m,k,W,H){
+  const shapes=k===2?[[[0,0],[1,0]],[[0,0],[0,1]]]:[[[0,0],[1,0],[2,0]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[0,1]],[[0,0],[1,0],[1,1]],[[1,0],[0,1],[1,1]],[[0,0],[0,1],[1,1]]];
+  for(let t=0;t<400;t++){const cells=[];let ok=true;
+    for(let p=0;p<m&&ok;p++){let placed=false;
+      for(let q=0;q<80&&!placed;q++){const sh=R.pick(shapes),ox=R.int(0,W-1),oy=R.int(0,H-1),pc=sh.map(([x,y])=>[x+ox,y+oy]);
+        if(pc.some(([x,y])=>x>=W||y>=H||has(cells,x,y)))continue;
+        if(cells.length&&!pc.some(([x,y])=>[[1,0],[-1,0],[0,1],[0,-1]].some(([dx,dy])=>has(cells,x+dx,y+dy))))continue;
+        pc.forEach(c=>cells.push(c));placed=true}
+      if(!placed)ok=false}
+    if(ok)return cells}
+  return Array.from({length:m*k},(_,i)=>[i%W,Math.floor(i/W)]);
+}
+/* oblique cubes */
+function cubesSVG(list,color,sc=1,label=''){
+  const s=26,d=11,L=list.slice().sort((p,q)=>q[1]-p[1]||p[2]-q[2]||p[0]-q[0]);
+  const sx=c=>c[0]*s+c[1]*d,sy=c=>-(c[2]*s+c[1]*d);
+  const x0=Math.min(...L.map(sx))-3,x1=Math.max(...L.map(sx))+s+d+3,y0=Math.min(...L.map(sy))-s-d-3,y1=3,W=x1-x0,H=y1-y0;
+  let g=`<svg viewBox="${x0} ${y0} ${W} ${H}" width="${W*sc}" style="max-width:100%;height:auto" class="cubes">`;
+  L.forEach(c=>{const X=sx(c),Y=sy(c),st=`stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"`;
+    g+=`<polygon points="${X+s},${Y-s} ${X+s+d},${Y-s-d} ${X+s+d},${Y-d} ${X+s},${Y}" fill="${color}" ${st}/><polygon points="${X+s},${Y-s} ${X+s+d},${Y-s-d} ${X+s+d},${Y-d} ${X+s},${Y}" fill="rgba(0,0,0,.25)"/>`;
+    g+=`<polygon points="${X},${Y-s} ${X+d},${Y-s-d} ${X+s+d},${Y-s-d} ${X+s},${Y-s}" fill="${color}" ${st}/><polygon points="${X},${Y-s} ${X+d},${Y-s-d} ${X+s+d},${Y-s-d} ${X+s},${Y-s}" fill="rgba(255,255,255,.4)"/>`;
+    g+=`<rect x="${X}" y="${Y-s}" width="${s}" height="${s}" fill="${color}" ${st}/>`});
+  return g+'</svg>';
+}
+const colsList=hs=>{const l=[];hs.forEach((h,x)=>{for(let z=0;z<h;z++)l.push([x,0,z])});return l};
+/* slots on 6x3 field */
+const slots=(R,n)=>{const c=[];for(let r=0;r<3;r++)for(let q=0;q<6;q++)c.push([q*50+5+R.int(-3,3),r*50+5+R.int(-3,3)]);return R.shuf(c).slice(0,n)};
+
+/* ---------- K2 1주: 입체 모양 ---------- */
+T.sSame={cat:'1주 · 입체 모양 알기',say:'위의 모양과 같은 모양을 찾아요.',q:'위의 모양과 같은 모양을 찾아요',...selT,
+  gen(R,l){const t=R.pick(SK),ks=R.shuf(SK),tc=R.pick(PAL);return{t,tc,opts:ks.map(k=>({k,c:R.pick(PAL.filter(x=>x!==tc))})),ans:ks.indexOf(t),st:{sel:null}}},
+  view(it,rev){return`<div class="stage">${sol(it.t,it.tc,120)}</div><div class="opts">${it.opts.map((o,i)=>`<button class="opt ${optCls(it.st.sel,i,it.ans,rev)}" data-act="tap" data-v="${i}">${sol(o.k,o.c,90)}</button>`).join('')}</div>`},
+  exp:it=>`색깔은 달라도 모양이 같으면 돼요. 이건 ${SN[it.t]} 모양이에요.`};
+T.sOdd={cat:'1주 · 다른 모양 찾기',say:'모양이 다른 하나를 찾아요.',q:'모양이 다른 하나를 찾아요',...selT,
+  gen(R,l){const a=R.pick(SK),b=R.pick(SK.filter(x=>x!==a)),n=l===1?4:5,odd=R.int(0,n-1);return{a,b,ans:odd,items:Array.from({length:n},(_,i)=>({k:i===odd?b:a,c:R.pick(PAL)})),st:{sel:null}}},
+  view(it,rev){return`<div class="opts">${it.items.map((o,i)=>`<button class="opt ${optCls(it.st.sel,i,it.ans,rev)}" data-act="tap" data-v="${i}">${sol(o.k,o.c,76)}</button>`).join('')}</div>`},
+  exp:it=>`나머지는 모두 ${SN[it.a]} 모양인데 이것만 ${SN[it.b]} 모양이에요.`};
+function makeSort(cat,keys,lab,draw,pool,hint){return{cat,say:'눌러서 알맞은 칸에 넣어요.',q:'같은 모양끼리 모아요',
+  gen(R,l){const n=l===1?5:l===2?6:8;let ts;do{ts=Array.from({length:n},()=>R.pick(keys))}while(keys.some(t=>!ts.includes(t)));return{items:ts.map(t=>({t,v:R.pick(pool?pool[t]:PAL)})),st:{asg:Array(n).fill(null),sel:null}}},
+  view(it,rev){const{asg,sel}=it.st;
+    const tray=it.items.map((o,i)=>asg[i]?'':`<div class="cell ${sel===i?'sel':''}" data-act="tap" data-v="s${i}">${draw(o,54)}</div>`).join('');
+    const bins=keys.map(t=>`<div class="bin" data-act="tap" data-v="b${t}"><div class="bl">${lab[t]}</div><div class="cont">${it.items.map((o,i)=>asg[i]===t?`<div class="cell ${rev?(o.t===t?'good':'bad'):''}" data-act="tap" data-v="u${i}">${draw(o,40)}</div>`:'').join('')}</div></div>`).join('');
+    return`<div class="stage">${tray||'<span class="jua">모두 넣었어요!</span>'}</div><div class="bins">${bins}</div>`},
+  tap(it,v){const s=it.st;if(v[0]==='s')s.sel=s.sel===+v.slice(1)?null:+v.slice(1);else if(v[0]==='b'){if(s.sel!=null){s.asg[s.sel]=v.slice(1);s.sel=null}}else if(v[0]==='u')s.asg[+v.slice(1)]=null},
+  can:it=>it.st.asg.every(Boolean),ok:it=>it.items.every((o,i)=>it.st.asg[i]===o.t),
+  exp:it=>`잘못 들어간 것이 ${it.items.filter((o,i)=>it.st.asg[i]!==o.t).length}개 있어요(빨간 테두리). ${hint}`}}
+T.sSort=makeSort('1주 · 모양 모으기',SK,{box:'상자',can:'통',ball:'공'},(o,s)=>sol(o.t,o.v,s),null,'상자는 모서리가 있고, 통은 위아래가 동그랗고, 공은 어디서 봐도 동그래요.');
+T.oSort=makeSort('2주 · 물건 분류',SK,{box:'📦 상자',can:'🥫 통',ball:'⚽ 공'},(o,s)=>`<span style="font-size:${s*.8}px;line-height:1.1;display:block">${o.v}</span>`,OBJ,'생활 속 물건도 상자·통·공 모양으로 나눌 수 있어요.');
+function solScat(R,counts){const list=[];SK.forEach(k=>{for(let i=0;i<counts[k];i++)list.push({k,c:R.pick(PAL)})});const L=R.shuf(list),p=slots(R,L.length);return L.map((o,i)=>({...o,x:p[i][0],y:p[i][1]}))}
+function solScatSVG(list,sel,rev,tk,tap){let s='<svg viewBox="0 0 300 150" class="scat">';
+  list.forEach((o,i)=>{const on=sel&&sel.includes(i),t=o.k===tk;
+    if(tap){if(on)s+=`<rect x="${o.x-2}" y="${o.y-2}" width="44" height="44" rx="8" fill="#FFF3B8" stroke="${rev&&!t?'#FF5A5F':'#E89F00'}" stroke-width="3"/>`;else if(rev&&t)s+=`<rect x="${o.x-2}" y="${o.y-2}" width="44" height="44" rx="8" fill="none" stroke="#3BB273" stroke-width="3" stroke-dasharray="5 4"/>`}
+    s+=`<svg x="${o.x}" y="${o.y}" width="40" height="40" viewBox="0 0 100 100">${sol(o.k,o.c,100).replace(/<svg[^>]*>|<\/svg>/g,'')}</svg>`;
+    if(tap)s+=`<rect x="${o.x}" y="${o.y}" width="40" height="40" fill="rgba(0,0,0,.001)" data-act="tap" data-v="${i}" style="cursor:pointer"/>`});
+  return s+'</svg>'}
+T.sPick={cat:'1주 · 모양 찾아 칠하기',say:null,
+  gen(R,l){const t=R.pick(SK),cs={};SK.forEach(k=>cs[k]=k===t?R.int(2,4):R.int(1,3));const list=solScat(R,cs);return{t,list,target:list.map((o,i)=>o.k===t?i:-1).filter(i=>i>=0),st:{on:[]}}},
+  q:it=>`${SN[it.t]} 모양을 모두 찾아 눌러요`,
+  view(it,rev){return`<div class="stage">${solScatSVG(it.list,it.st.on,rev,it.t,true)}</div>`},
+  tap:(it,v)=>toggleT(it,v),can:it=>it.st.on.length>0,ok:it=>sameSet(it.st.on,it.target),
+  exp:it=>`${SN[it.t]} 모양은 모두 ${it.target.length}개예요. 초록 점선은 놓친 것, 빨간 테두리는 다른 모양이에요.`};
+const BUILD={robot:{n:'로봇',p:[['box',110,4,60],['can',108,60,64],['ball',66,70,36],['ball',198,70,36],['can',112,120,40],['can',150,120,40]]},
+ snow:{n:'눈사람 마을',p:[['ball',110,100,80],['ball',122,46,56],['can',128,6,44],['box',30,140,50],['box',220,140,50]]},
+ train:{n:'기차',p:[['box',20,100,70],['box',100,100,70],['can',190,70,60],['ball',30,160,36],['ball',110,160,36],['ball',200,140,36]]}};
+T.sBuild={cat:'1주 · 부분과 전체',say:null,
+  gen(R,l){const key=R.pick(Object.keys(BUILD)),p=BUILD[key].p,cnt={};p.forEach(q=>cnt[q[0]]=(cnt[q[0]]||0)+1);const ks=SK.filter(k=>cnt[k]>=2),t=R.pick(ks);return{key,cols:p.map(()=>R.pick(PAL)),t,ans:cnt[t],cnt,st:{sel:null}}},
+  q:it=>`${BUILD[it.key].n}에서 ${SN[it.t]} 모양은 모두 몇 개일까요?`,
+  view(it,rev){let s='<div class="stage"><svg viewBox="0 0 300 210" class="scat">';BUILD[it.key].p.forEach((q,i)=>{s+=`<svg x="${q[1]}" y="${q[2]}" width="${q[3]}" height="${q[3]}" viewBox="0 0 100 100">${sol(q[0],it.cols[i],100).replace(/<svg[^>]*>|<\/svg>/g,'')}</svg>`;if(rev&&q[0]===it.t)s+=`<rect x="${q[1]}" y="${q[2]}" width="${q[3]}" height="${q[3]}" fill="none" stroke="#FF5A5F" stroke-width="3" stroke-dasharray="5 4"/>`});return s+'</svg></div>'+numBtns(it,rev,[1,2,3,4,5,6])},
+  ...selT,exp:it=>`${SN[it.t]} 모양은 ${it.ans}개예요. 빨간 점선을 따라 세어 보세요. (상자 ${it.cnt.box||0}, 통 ${it.cnt.can||0}, 공 ${it.cnt.ball||0})`};
+/* ---------- K2 2주: 선 잇기 ---------- */
+const LKC=['#FF5A5F','#4D96FF','#3BB273'];
+T.link={cat:'2주 · 선 잇기',say:'같은 모양끼리 짝을 지어 주세요. 왼쪽을 누르고 오른쪽을 눌러요.',q:'같은 모양끼리 이어요 (왼쪽 → 오른쪽)',
+  gen(R,l){const left=R.shuf(SK),right=R.shuf(SK).map(k=>({k,e:R.pick(OBJ[k])}));return{left,right,lc:left.map(()=>R.pick(PAL)),st:{sel:null,map:{}}}},
+  view(it,rev){const m=it.st.map,okOf=i=>it.right[m[i]]&&it.right[m[i]].k===it.left[i];
+    const L=it.left.map((k,i)=>`<button class="opt ${it.st.sel===i?'sel':''} ${rev&&m[i]!=null?(okOf(i)?'good':'bad'):''}" style="${m[i]!=null&&!rev?`border-color:${LKC[i]};border-width:7px`:''}" data-act="tap" data-v="l${i}">${sol(k,it.lc[i],70)}</button>`).join('');
+    const R_=it.right.map((o,j)=>{const li=Object.keys(m).find(i=>m[i]===j);return`<button class="opt" style="${li!=null?`border-color:${LKC[li]};border-width:7px`:''}" data-act="tap" data-v="r${j}"><span style="font-size:48px;line-height:1.1">${o.e}</span></button>`}).join('');
+    return`<div class="stage" style="justify-content:space-around;align-items:flex-start"><div style="display:flex;flex-direction:column;gap:10px">${L}</div><div style="align-self:center;font-size:30px">➜</div><div style="display:flex;flex-direction:column;gap:10px">${R_}</div></div>`},
+  tap(it,v){const s=it.st;if(v[0]==='l'){const i=+v.slice(1);if(s.map[i]!=null)delete s.map[i];s.sel=i}else if(s.sel!=null){const j=+v.slice(1);Object.keys(s.map).forEach(i=>{if(s.map[i]===j)delete s.map[i]});s.map[s.sel]=j;s.sel=null}},
+  can:it=>Object.keys(it.st.map).length===3,ok:it=>it.left.every((k,i)=>it.right[it.st.map[i]]&&it.right[it.st.map[i]].k===k),
+  exp:()=>'상자 모양은 📦처럼 각진 물건, 통 모양은 🥫처럼 둥근 기둥, 공 모양은 ⚽처럼 동그란 물건이에요.'};
+/* ---------- K2 3주: 쌓기나무 ---------- */
+T.cubeCount={cat:'3주 · 쌓기나무',say:null,q:'쌓기나무는 모두 몇 개일까요?',
+  gen(R,l){const n=l===1?R.int(2,3):l===2?3:4,mx=l===1?2:l===2?3:4;let hs;do{hs=Array.from({length:n},()=>R.int(1,mx))}while(hs.reduce((a,b)=>a+b,0)>12||(l>1&&hs.every(h=>h===hs[0])));return{hs,ans:hs.reduce((a,b)=>a+b,0),c:R.pick(PAL),st:{sel:null}}},
+  view(it,rev){return`<div class="stage">${cubesSVG(colsList(it.hs),it.c,1.4)}</div>`+numBtns(it,rev,NUM12)},...selT,
+  exp:it=>`줄마다 세어 더해 보세요: ${it.hs.join(' + ')} = ${it.ans}개예요.`};
+T.cubeCmp={cat:'3주 · 쌓기나무 비교',say:null,q:'쌓기나무가 더 많은 쪽은 어디일까요?',
+  gen(R,l){let a,b,sa,sb;do{const n=l===1?2:3;a=Array.from({length:n},()=>R.int(1,l===1?2:3));b=Array.from({length:n},()=>R.int(1,l===1?2:3));sa=a.reduce((x,y)=>x+y,0);sb=b.reduce((x,y)=>x+y,0)}while(l<3?sa===sb:false);
+    return{a,b,sa,sb,ca:R.pick(PAL),cb:R.pick(PAL),ans:sa>sb?'A':sa<sb?'B':'E',st:{sel:null}}},
+  view(it,rev){const opt=(k,t)=>`<button class="opt ${optCls(it.st.sel,k,it.ans,rev)}" data-act="tap" data-v="${k}">${t}</button>`;
+    return`<div class="stage"><div style="text-align:center"><div class="jua">가</div>${cubesSVG(colsList(it.a),it.ca,1)}</div><div style="text-align:center"><div class="jua">나</div>${cubesSVG(colsList(it.b),it.cb,1)}</div></div><div class="opts">${opt('A','가')}${opt('B','나')}${it.sa===it.sb?opt('E','같아요'):''}</div>`},...selT,
+  exp:it=>`가는 ${it.sa}개, 나는 ${it.sb}개예요.`};
+/* ---------- K2 4주: 새가 보는 모양 ---------- */
+T.topView={cat:'4주 · 새가 보는 모양',say:'새가 하늘에서 내려다보면 어떤 모양일까요?',q:'새가 하늘에서 내려다보면 어떤 모양일까요?',
+  gen(R,l){const W=l===2?4:3,H=l===3?3:2,n=l===1?R.int(3,4):l===2?R.int(4,6):R.int(5,6),F=randPoly(R,n,W,H),key=cs=>cs.map(c=>c.join(',')).sort().join(';');
+    const opts=[F],seen=new Set([key(F)]),cand=[F.map(([x,y])=>[W-1-x,y]),F.map(([x,y])=>[x,H-1-y])];
+    for(let t=0;t<40;t++){const i=R.int(0,F.length-1);for(const[dx,dy]of R.shuf([[1,0],[-1,0],[0,1],[0,-1]])){const nx=F[i][0]+dx,ny=F[i][1]+dy;if(nx>=0&&ny>=0&&nx<W&&ny<H&&!has(F,nx,ny)){cand.push(F.map((c,j)=>j===i?[nx,ny]:c));break}}}
+    R.shuf(cand).forEach(c=>{if(opts.length<3&&!seen.has(key(c))){seen.add(key(c));opts.push(c)}});
+    for(let t=0;opts.length<3&&t<200;t++){const c=randPoly(R,n,W,H);if(!seen.has(key(c))){seen.add(key(c));opts.push(c)}}
+    const sh=R.shuf(opts.map((c,i)=>({c,ok:i===0})));return{W,H,F,c:R.pick(PAL),opts:sh.map(x=>x.c),ans:sh.findIndex(x=>x.ok),st:{sel:null}}},
+  view(it,rev){const{W,H}=it;const top=cs=>gridCells(W,H,(x,r)=>has(cs,x,H-1-r)?{fill:FILLC}:{fill:'#fff',stroke:'#BCDDF6',sw:1.5},30);
+    return`<div class="stage">${cubesSVG(it.F.map(([x,y])=>[x,y,0]),it.c,1.3)}</div><div class="opts">${it.opts.map((cs,i)=>`<button class="opt ${optCls(it.st.sel,i,it.ans,rev)}" data-act="tap" data-v="${i}">${top(cs)}</button>`).join('')}</div>`},...selT,
+  exp:()=>'위에서 내려다보면 쌓기나무의 윗면만 보여요. 앞쪽은 아래, 뒤쪽은 위에 그려져요.'};
+
+/* ---------- K3 ---------- */
+T.mirror={cat:'1주 · 거울 색칠',say:'가운데 선이 거울이에요. 거울에 비친 모양처럼 오른쪽을 색칠해요.',q:'거울에 비친 것처럼 오른쪽을 색칠해요',
+  gen(R,l){const m=l===3?3:2,rows=l===1?3:4,left=[];for(let y=0;y<rows;y++)for(let x=0;x<m;x++)if(R.r()<.5)left.push([x,y]);if(left.length<2){left.push([0,0],[m-1,rows-1])}
+    const uniq=[];left.forEach(c=>{if(!has(uniq,c[0],c[1]))uniq.push(c)});
+    const target=uniq.map(([x,y])=>y*2*m+(2*m-1-x));return{m,rows,left:uniq,target,st:{on:[]}}},
+  view(it,rev){const{m,rows,left}=it,w=2*m,mid=4+m*34;
+    const g=gridCells(w,rows,(x,y)=>{const i=y*w+x;if(x<m)return{fill:has(left,x,y)?FILLC:'#fff'};const on=it.st.on.includes(i),t=it.target.includes(i);
+      if(rev){if(t&&!on)return{fill:'#BFEFD0',dash:1,stroke:'#3BB273'};if(on&&!t)return{fill:FILLC,stroke:'#FF5A5F',sw:4}}
+      return{fill:on?FILLC:'#fff',act:i,stroke:on?INK:'#7FA2CC',dash:!on}},34,`<line x1="${mid}" y1="0" x2="${mid}" y2="${rows*34+8}" stroke="#FF5A5F" stroke-width="4" stroke-dasharray="7 5"/>`);
+    return`<div class="stage">${g}</div>`},
+  tap:(it,v)=>toggleT(it,v),can:it=>it.st.on.length>0,ok:it=>sameSet(it.st.on,it.target),
+  exp:()=>'가운데 선을 접으면 왼쪽과 오른쪽이 딱 겹쳐야 해요. 초록 점선이 빠진 칸이에요.'};
+function makeFill(cat,k,say){return{cat,say,q:`빈 곳에 꼭 맞는 조각을 찾아요`,
+  gen(R,l){const W=k===3?3:4,H=3,hole=randPoly(R,k,W,H),piece=normC(hole),pk=keyOf(piece),opts=[piece],seen=new Set([pk]);
+    let p=piece;for(let r=0;r<3;r++){p=rot90(p);if(!seen.has(keyOf(p))&&opts.length<3&&R.r()<(l>1?.9:.4)){seen.add(keyOf(p));opts.push(p)}}
+    for(let t=0;opts.length<3&&t<300;t++){const c=normC(randPoly(R,k,k,k));if(!seen.has(keyOf(c))){seen.add(keyOf(c));opts.push(c)}}
+    const sh=R.shuf(opts.map((c,i)=>({c,ok:i===0})));return{W,H,hole,c:R.pick(['#7DB9FF','#FFB86B','#8EDB9B','#C3A9FF']),opts:sh.map(x=>x.c),ans:sh.findIndex(x=>x.ok),st:{sel:null}}},
+  view(it,rev){const g=gridCells(it.W,it.H,(x,y)=>has(it.hole,x,y)?{fill:'#fff',dash:1,stroke:'#FF5A5F',txt:'?',tc:'#FF5A5F'}:{fill:it.c},34);
+    return`<div class="stage">${g}</div><div class="opts">${it.opts.map((cs,i)=>`<button class="opt ${optCls(it.st.sel,i,it.ans,rev)}" data-act="tap" data-v="${i}">${polyView(cs,24,it.c)}</button>`).join('')}</div>`},...selT,
+  exp:()=>'조각을 돌리지 않고 그대로 빈 곳에 놓았을 때 꼭 맞는 것이 정답이에요.'}}
+T.fill3=makeFill('2주 · 잘린 조각 잇기',3,'빈 곳에 꼭 맞는 조각을 찾아요.');
+T.fill4=makeFill('3주 · 테트로미노 끼우기',4,'빈 곳에 꼭 맞는 네 칸 조각을 찾아요.');
+T.holes={cat:'3주 · 구멍 종이 겹치기',say:'두 종이를 겹쳤을 때, 두 종이 모두 구멍이 뚫린 칸에 동그라미를 해요.',q:'두 종이를 겹치면 구멍이 뚫린 칸은 어디일까요? ○를 눌러요',
+  gen(R,l){const n=l===1?2:3,all=Array.from({length:n*n},(_,i)=>i);let A,B,I;do{A=all.filter(()=>R.r()<.6);B=all.filter(()=>R.r()<.6);I=A.filter(x=>B.includes(x))}while(!I.length||I.length===n*n||A.length===n*n||B.length===n*n);return{n,A,B,I,st:{on:[]}}},
+  view(it,rev){const n=it.n,paper=(h,c)=>gridCells(n,n,(x,y)=>h.includes(y*n+x)?{fill:'#fff',txt:'○',tc:'#999',dash:1}:{fill:c},32);
+    const res=gridCells(n,n,(x,y)=>{const i=y*n+x,on=it.st.on.includes(i),t=it.I.includes(i);let st={fill:on?'#BFEFD0':'#EEF0F5',txt:on?'○':'×',tc:on?'#2E9E63':'#9AA',act:i};if(rev){if(t&&!on)st={fill:'#fff',stroke:'#3BB273',dash:1,sw:4,txt:'○',tc:'#3BB273'};else if(on&&!t)st={...st,stroke:'#FF5A5F',sw:4}}return st},32);
+    return`<div class="stage"><div>${paper(it.A,'#9AD1FF')}<div class="small" style="text-align:center">종이 1</div></div><b class="jua">+</b><div>${paper(it.B,'#FFD39A')}<div class="small" style="text-align:center">종이 2</div></div><b class="jua">=</b><div>${res}<div class="small" style="text-align:center">겹치면?</div></div></div>`},
+  tap:(it,v)=>toggleT(it,v),can:it=>true,ok:it=>sameSet(it.st.on,it.I),
+  exp:it=>`두 종이 모두 구멍(○)인 칸만 뚫려 있어요. 모두 ${it.I.length}칸이에요. (초록 점선은 빠진 칸)`};
+const OVC={0:'#fff',1:'#9AD1FF',2:'#FFD39A',3:'#8EDB9B'};
+T.overlay={cat:'4주 · 투명 종이 겹치기',prov:true,say:'두 장의 투명 종이를 겹치면 어떤 그림이 될까요?',q:'두 투명 종이를 겹치면 어떤 그림이 될까요?',
+  gen(R,l){const n=l===1?2:3,all=Array.from({length:n*n},(_,i)=>i);let A,B;do{A=all.filter(()=>R.r()<.45);B=all.filter(()=>R.r()<.45)}while(A.length<1||B.length<1);
+    const code=i=>(A.includes(i)?1:0)+(B.includes(i)?2:0),good=all.map(code),key=a=>a.join(''),opts=[good],seen=new Set([key(good)]);
+    for(let t=0;opts.length<3&&t<200;t++){const o=good.slice(),c=R.int(1,2);for(let j=0;j<c;j++){const i=R.int(0,all.length-1);o[i]=(o[i]+R.int(1,3))%4}if(!seen.has(key(o))){seen.add(key(o));opts.push(o)}}
+    const sh=R.shuf(opts.map((c,i)=>({c,ok:i===0})));return{n,A,B,opts:sh.map(x=>x.c),ans:sh.findIndex(x=>x.ok),st:{sel:null}}},
+  view(it,rev){const n=it.n,pap=(h,c)=>gridCells(n,n,(x,y)=>({fill:h.includes(y*n+x)?c:'#fff',stroke:'#7FA2CC',sw:1.5}),30),og=o=>gridCells(n,n,(x,y)=>({fill:OVC[o[y*n+x]]}),30);
+    return`<div class="stage">${pap(it.A,OVC[1])}<b class="jua">+</b>${pap(it.B,OVC[2])}</div><div class="small" style="text-align:center">파랑+노랑이 겹친 칸은 초록색이 돼요</div><div class="opts">${it.opts.map((o,i)=>`<button class="opt ${optCls(it.st.sel,i,it.ans,rev)}" data-act="tap" data-v="${i}">${og(o)}</button>`).join('')}</div>`},...selT,
+  exp:()=>'파란 칸은 1번 종이, 노란 칸은 2번 종이, 두 종이가 겹친 칸은 초록색이에요.'};
+
+/* ---------- K4 ---------- */
+T.area={cat:'1주 · 칸 세어 넓이',say:null,q:'색칠된 칸은 모두 몇 칸일까요?',
+  gen(R,l){const n=l===1?R.int(3,5):l===2?R.int(5,8):R.int(8,12),cs=randPoly(R,n,l===1?4:5,l===1?3:4);return{cs,ans:n,st:{sel:null}}},
+  view(it,rev){const b=bb(it.cs);return`<div class="stage">${gridCells(b.w,b.h,(x,y)=>({fill:has(it.cs,x,y)?(rev?'#FFE27A':FILLC):'#fff',stroke:has(it.cs,x,y)?INK:'#BCDDF6',sw:has(it.cs,x,y)?2.5:1.5,txt:rev&&has(it.cs,x,y)?String(it.cs.findIndex(c=>c[0]===x&&c[1]===y)+1):''}),34)}</div>`+numBtns(it,rev,NUM12)},...selT,
+  exp:it=>`칸에 번호를 붙여 세어 보면 ${it.ans}칸이에요.`};
+T.areaCmp={cat:'1주 · 넓이 비교',say:null,q:'어느 쪽이 더 넓을까요?',
+  gen(R,l){let a,b;const mx=l===1?6:8;do{a=randPoly(R,R.int(3,mx),4,3);b=randPoly(R,R.int(3,mx),4,3)}while(l<3&&a.length===b.length);if(l===3&&R.r()<.4){b=normC(randPoly(R,a.length,4,3))}
+    return{a,b,ans:a.length>b.length?'A':a.length<b.length?'B':'E',st:{sel:null}}},
+  view(it,rev){const opt=(k,t)=>`<button class="opt ${optCls(it.st.sel,k,it.ans,rev)}" data-act="tap" data-v="${k}">${t}</button>`;
+    return`<div class="stage"><div style="text-align:center"><div class="jua">가</div>${polyView(it.a,28)}</div><div style="text-align:center"><div class="jua">나</div>${polyView(it.b,28)}</div></div><div class="opts">${opt('A','가')}${opt('B','나')}${opt('E','같아요')}</div>`},...selT,
+  exp:it=>`가는 ${it.a.length}칸, 나는 ${it.b.length}칸이에요.`};
+T.tileCount={cat:'2주 · 도미노·트리미노 채우기',say:null,
+  gen(R,l){const k=R.pick([2,3]),m=l===1?R.int(2,3):l===2?R.int(3,4):R.int(4,5),cs=growPieces(R,m,k,k===2?4:5,4);return{k,m,cs,ans:m,st:{sel:null}}},
+  q:it=>`${it.k===2?'도미노(2칸)':'트리미노(3칸)'}로 빈틈없이 채우려면 몇 개 필요할까요?`,
+  view(it,rev){const b=bb(it.cs),demo=it.k===2?polyView([[0,0],[1,0]],22,'#FFB86B'):polyView([[0,0],[1,0],[2,0]],22,'#FFB86B');
+    return`<div class="stage"><div style="text-align:center">${demo}<div class="small">${it.k===2?'도미노':'트리미노'}</div></div><div>${gridCells(b.w,b.h,(x,y)=>has(it.cs,x,y)?{fill:FILLC}:null,32)}</div></div>`+numBtns(it,rev,[1,2,3,4,5,6])},...selT,
+  exp:it=>`칸이 모두 ${it.cs.length}칸이고 한 조각이 ${it.k}칸이니까 ${it.cs.length} ÷ ${it.k} = ${it.m}개예요.`};
+T.cantTile={cat:'2주 · 만들 수 없는 모양',say:'도미노 두 칸짜리 조각으로 빈틈없이 채울 수 없는 모양을 찾아요.',q:'도미노(2칸)로 빈틈없이 채울 수 없는 모양은?',
+  gen(R,l){const odd=R.pick(l===1?[3,5]:[5,7]),even=()=>growPieces(R,R.int(2,l===1?3:4),2,4,4),shapes=[randPoly(R,odd,4,4),even(),even()],ord=R.shuf([0,1,2]);return{shapes:ord.map(i=>shapes[i]),ans:ord.indexOf(0),st:{sel:null}}},
+  view(it,rev){return`<div class="opts">${it.shapes.map((cs,i)=>`<button class="opt ${optCls(it.st.sel,i,it.ans,rev)}" data-act="tap" data-v="${i}">${polyView(cs,26)}</button>`).join('')}</div>`},...selT,
+  exp:it=>`도미노는 2칸씩이라서 칸 수가 짝수여야 해요. 이 모양은 ${it.shapes[it.ans].length}칸(홀수)이라 안 돼요.`};
+const TET={I:[[0,0],[1,0],[2,0],[3,0]],O:[[0,0],[1,0],[0,1],[1,1]],T:[[0,0],[1,0],[2,0],[1,1]],L:[[0,0],[0,1],[0,2],[1,2]],S:[[1,0],[2,0],[0,1],[1,1]]};
+T.tetroSame={cat:'3주 · 테트로미노 알기',say:'위의 조각을 돌리면 똑같아지는 조각을 찾아요.',q:'돌리면 똑같아지는 조각을 찾아요',
+  gen(R,l){const ks=R.shuf(Object.keys(TET)),t=ks[0],kk=R.shuf(ks.slice(0,3)),rt=p=>{for(let i=R.int(0,3);i>0;i--)p=rot90(p);return p};
+    return{target:rt(normC(TET[t])),opts:kk.map(k=>rt(normC(TET[k]))),ans:kk.indexOf(t),c:R.pick(PAL),st:{sel:null}}},
+  view(it,rev){return`<div class="stage">${polyView(it.target,30,it.c)}</div><div class="opts">${it.opts.map((cs,i)=>`<button class="opt ${optCls(it.st.sel,i,it.ans,rev)}" data-act="tap" data-v="${i}">${polyView(cs,24,it.c)}</button>`).join('')}</div>`},...selT,
+  exp:()=>'조각을 빙글 돌려 보면 같은 조각이 있어요. 뒤집으면 안 되고, 돌리기만 해요.'};
+const PBC={hex:'#FFD23F',tri:'#3BB273',sq:'#FF9F43',rh:'#4D96FF'},PBN={hex:'육각형',tri:'삼각형',sq:'사각형',rh:'마름모'};
+function pbIcon(k){const st=`stroke="${INK}" stroke-width="5" stroke-linejoin="round" fill="${PBC[k]}"`;
+  if(k==='hex')return`<polygon points="${[0,1,2,3,4,5].map(i=>`${50+42*Math.cos(i*Math.PI/3)},${50+42*Math.sin(i*Math.PI/3)}`).join(' ')}" ${st}/>`;
+  if(k==='tri')return`<polygon points="50,10 90,80 10,80" ${st}/>`;if(k==='sq')return`<rect x="16" y="16" width="68" height="68" ${st}/>`;
+  return`<polygon points="50,8 88,50 50,92 12,50" ${st}/>`}
+T.pbCount={cat:'4주 · 패턴블록',say:null,
+  gen(R,l){const ks=R.shuf(['hex','tri','sq','rh']).slice(0,3),t=ks[0],cs={};ks.forEach(k=>cs[k]=k===t?R.int(2,5):R.int(1,3));const list=[];ks.forEach(k=>{for(let i=0;i<cs[k];i++)list.push(k)});const L=R.shuf(list),p=slots(R,L.length);
+    return{t,list:L.map((k,i)=>({k,x:p[i][0],y:p[i][1],rot:R.int(-15,15)})),ans:cs[t],cs,st:{sel:null}}},
+  q:it=>`${PBN[it.t]} 블록은 모두 몇 개일까요?`,
+  view(it,rev){let s='<div class="stage"><svg viewBox="0 0 300 150" class="scat">';let n=0;it.list.forEach(o=>{s+=`<svg x="${o.x}" y="${o.y}" width="40" height="40" viewBox="0 0 100 100"><g transform="rotate(${o.rot} 50 50)">${pbIcon(o.k)}</g></svg>`;if(rev&&o.k===it.t){n++;s+=`<circle cx="${o.x+20}" cy="${o.y+22}" r="10" fill="#fff" stroke="#FF5A5F" stroke-width="2"/><text x="${o.x+20}" y="${o.y+27}" text-anchor="middle" font-size="14" font-weight="bold" fill="#FF5A5F">${n}</text>`}});return s+'</svg></div>'+numBtns(it,rev,[1,2,3,4,5,6,7,8,9])},...selT,
+  exp:it=>`${PBN[it.t]}에 빨간 번호를 붙여 세어 보면 ${it.ans}개예요.`};
+T.pbHex={cat:'4주 · 패턴블록 만들기',say:null,
+  gen(R,l){const m=R.pick(['tri','rh','trap']);return{m,ans:{tri:6,rh:3,trap:2}[m],cols:R.shuf(PAL),st:{sel:null}}},
+  q:it=>`노란 육각형을 ${{tri:'삼각형',rh:'마름모',trap:'사다리꼴'}[it.m]} 조각으로 나눴어요. 조각은 모두 몇 개일까요?`,
+  view(it,rev){const V=Array.from({length:6},(_,i)=>[100+80*Math.cos(i*Math.PI/3),100+80*Math.sin(i*Math.PI/3)]),C=[100,100],P=a=>a.map(p=>p.join(',')).join(' ');
+    let pcs=[];if(it.m==='tri')for(let i=0;i<6;i++)pcs.push([C,V[i],V[(i+1)%6]]);if(it.m==='rh')for(let i=0;i<3;i++)pcs.push([C,V[2*i],V[2*i+1],V[(2*i+2)%6]]);if(it.m==='trap'){pcs.push([V[0],V[1],V[2],V[3]]);pcs.push([V[3],V[4],V[5],V[0]])}
+    const g=pcs.map((p,i)=>`<polygon points="${P(p)}" fill="${rev?it.cols[i%6]:'#FFD23F'}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>`).join('');
+    return`<div class="stage"><svg viewBox="0 0 200 200" class="scene" style="max-width:260px">${g}</svg></div>`+numBtns(it,rev,[1,2,3,4,5,6,7,8])},...selT,
+  exp:it=>`선을 따라 조각을 하나씩 세어 보면 ${it.ans}개예요. (색깔로 나눠 보여 줬어요)`};
+
+/* ===== 미니게임: 칠교놀이 ===== */
+const TGF=[{"n":"\uc624\ub9ac","e":"\ud83e\udd86","p":[{"t":"med","f":0,"a":135,"cx":1.1785,"cy":-0.7071},{"t":"big","f":0,"a":315,"cx":1.1785,"cy":1.1785},{"t":"small","f":0,"a":135,"cx":-0.2357,"cy":1.1785},{"t":"sq","f":0,"a":45,"cx":0.0,"cy":0.0},{"t":"big","f":0,"a":315,"cx":-1.6499,"cy":1.1785},{"t":"small","f":0,"a":135,"cx":-1.6499,"cy":-0.2357},{"t":"para","f":1,"a":45,"cx":2.1213,"cy":-1.4142}]},{"n":"\uac15\uc544\uc9c0","e":"\ud83d\udc36","p":[{"t":"small","f":0,"a":225,"cx":-0.4714,"cy":1.1785},{"t":"big","f":0,"a":45,"cx":-1.8856,"cy":1.1785},{"t":"para","f":0,"a":45,"cx":-2.1213,"cy":-0.7071},{"t":"sq","f":0,"a":45,"cx":-0.7071,"cy":0.0},{"t":"small","f":0,"a":225,"cx":-1.8856,"cy":-1.6499},{"t":"med","f":0,"a":135,"cx":0.4714,"cy":0.7071},{"t":"big","f":0,"a":225,"cx":1.8856,"cy":0.2357}]},{"n":"\ubb3c\uace0\uae30","e":"\ud83d\udc1f","p":[{"t":"small","f":0,"a":45,"cx":1.8856,"cy":1.6499},{"t":"big","f":0,"a":225,"cx":1.8856,"cy":0.2357},{"t":"small","f":0,"a":45,"cx":0.4714,"cy":0.2357},{"t":"sq","f":0,"a":45,"cx":0.7071,"cy":1.4142},{"t":"big","f":0,"a":315,"cx":-0.9428,"cy":1.1785},{"t":"para","f":0,"a":135,"cx":-1.4142,"cy":0.0},{"t":"med","f":0,"a":135,"cx":-2.357,"cy":-0.7071}]},{"n":"\ud1a0\ub07c","e":"\ud83d\udc30","p":[{"t":"big","f":0,"a":315,"cx":-0.9428,"cy":0.1179},{"t":"small","f":0,"a":135,"cx":-2.357,"cy":0.1179},{"t":"small","f":0,"a":135,"cx":-0.9428,"cy":-1.2964},{"t":"sq","f":0,"a":45,"cx":-2.1213,"cy":-1.0607},{"t":"big","f":0,"a":45,"cx":0.9428,"cy":0.1179},{"t":"med","f":0,"a":225,"cx":-1.4142,"cy":1.5321},{"t":"para","f":0,"a":45,"cx":1.4142,"cy":-1.0607}]},{"n":"\ubc30","e":"\u26f5","p":[{"t":"med","f":0,"a":45,"cx":2.8284,"cy":-0.4714},{"t":"small","f":0,"a":225,"cx":3.7712,"cy":-0.9428},{"t":"big","f":0,"a":135,"cx":0.9428,"cy":-0.4714},{"t":"big","f":0,"a":225,"cx":-0.9428,"cy":-0.4714},{"t":"para","f":1,"a":45,"cx":-2.8284,"cy":-0.7071},{"t":"small","f":0,"a":315,"cx":0.9428,"cy":0.9428},{"t":"sq","f":0,"a":45,"cx":2.1213,"cy":0.7071}]}];
+const TGB={big:[[-2,0],[2,0],[0,2]],med:[[0,0],[2,0],[0,2]],small:[[-1,0],[1,0],[0,1]],sq:[[0,-1],[1,0],[0,1],[-1,0]],para:[[0,0],[2,0],[3,1],[1,1]]};
+const TGC={big:'#4D96FF',med:'#3BB273',small:'#FFD23F',sq:'#FF9F43',para:'#A78BFA'};
+function polyCen(p){let A=0,cx=0,cy=0;for(let i=0;i<p.length;i++){const[x0,y0]=p[i],[x1,y1]=p[(i+1)%p.length],c=x0*y1-x1*y0;A+=c;cx+=(x0+x1)*c;cy+=(y0+y1)*c}A/=2;return[cx/(6*A),cy/(6*A)]}
+const TGL={};Object.keys(TGB).forEach(t=>{const c=polyCen(TGB[t]);TGL[t]=TGB[t].map(([x,y])=>[x-c[0],y-c[1]])});
+function tgPoly(t,f,a,x,y){const r=a*Math.PI/180,c=Math.cos(r),s=Math.sin(r);return TGL[t].map(([px,py])=>{if(f)px=-px;return[x+px*c-py*s,y+px*s+py*c]})}
+const tgPts=p=>p.map(q=>q[0].toFixed(3)+','+q[1].toFixed(3)).join(' ');
+const tgKey=p=>p.map(q=>[Math.round(q[0]*20),Math.round(q[1]*20)].join(',')).sort().join(';');
+const tgSame=(p,t)=>tgKey(tgPoly(p.t,p.f,p.a,0,0))===tgKey(tgPoly(t.t,t.f,t.a,0,0));
+const tgT=p=>`translate(${p.x.toFixed(3)} ${p.y.toFixed(3)}) rotate(${p.a})`;
+T.tangram={cat:'🧩 칠교놀이',mini:true,say:'조각을 끌어서 그림 위에 맞춰 보세요.',
+  q:it=>`칠교 조각으로 ${TGF[it.fi].e} ${TGF[it.fi].n} 모양을 완성해요`,
+  gen(R,l){const fi=R.int(0,TGF.length-1),f=TGF[fi],tg=f.p.map(q=>({t:q.t,f:q.f,a:q.a,x:7+q.cx,y:4.9+q.cy,taken:false}));
+    const sl=R.shuf([[2.6,11],[7,11],[11.4,11],[2.6,14],[7,14],[11.4,14],[7,16.9]]);
+    const p=tg.map((t,i)=>({t:t.t,f:t.f,a:l===1?t.a:(t.a+(l===2?90*R.int(1,3):45*R.int(1,7)))%360,x:sl[i][0],y:sl[i][1],placed:false}));
+    return{fi,l,tg,step:l===1?0:l===2?90:45,st:{p,n:0,done:false}}},
+  view(it,rev){const st=it.st,l=it.l;
+    let s=`<div class="stage" style="padding:4px"><svg id="tgsvg" viewBox="0 0 14 18.4" class="tgsvg"><rect x=".2" y="9.2" width="13.6" height="9" rx=".6" fill="#F2F8FF" stroke="#BCDDF6" stroke-width=".08" stroke-dasharray=".4 .3"/>`;
+    it.tg.forEach(t=>{const pl=tgPts(tgPoly(t.t,t.f,t.a,t.x,t.y));
+      s+=l===1?`<polygon points="${pl}" fill="${TGC[t.t]}" fill-opacity=".28" stroke="${TGC[t.t]}" stroke-width=".08" stroke-dasharray=".3 .2"/>`:l===2?`<polygon points="${pl}" fill="#CBD5E6" stroke="#fff" stroke-width=".07"/>`:`<polygon points="${pl}" fill="#CBD5E6" stroke="#CBD5E6" stroke-width=".05" stroke-linejoin="round"/>`});
+    st.p.forEach((p,i)=>{if(p.placed)s+=`<g transform="${tgT(p)}"><polygon points="${tgPts(tgPoly(p.t,p.f,0,0,0))}" fill="${TGC[p.t]}"/></g>`});
+    st.p.forEach((p,i)=>{if(!p.placed)s+=`<g class="pc" data-i="${i}" transform="${tgT(p)}"><polygon points="${tgPts(tgPoly(p.t,p.f,0,0,0))}" fill="${TGC[p.t]}"/></g>`});
+    s+='</svg></div>';
+    s+=st.done?'<div class="fb ok"><div class="big">🎉 완성! 멋져요!</div></div>':`<div id="tgmsg" class="small" style="text-align:center;min-height:20px">${l===1?'조각을 끌어서 같은 색 자리에 놓아요':l===2?'조각을 톡 누르면 돌아가요 🔄 끌어서 맞춰요':'눌러서 돌리고(🔄) 끌어서 맞춰요. 완성된 모양만 보여요!'} (${st.n}/7)</div>`;
+    return s},
+  tap(){},can:it=>it.st.done,ok:()=>true,exp:()=>''};
+let TD=null;
+const clampN=(v,a,b)=>Math.max(a,Math.min(b,v));
+function tgPt(svg,e){const pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const q=pt.matrixTransform(svg.getScreenCTM().inverse());return[q.x,q.y]}
+document.addEventListener('pointerdown',e=>{const g0=e.target.closest&&e.target.closest('.pc');if(!g0||!run||view!=='quiz')return;const it=run.items[run.i];if(!it||it.type!=='tangram')return;
+  const svg=document.getElementById('tgsvg'),pc=it.st.p[+g0.dataset.i];if(!svg||pc.placed)return;e.preventDefault();
+  const p0=tgPt(svg,e);
+  // DOM을 바꾸지 않아야 터치가 끊기지 않아요: 복제본을 맨 위에 띄워 끌고, 원본은 투명하게 둬요
+  const g=g0.cloneNode(true);g.removeAttribute('class');g.style.pointerEvents='none';svg.appendChild(g);g0.style.opacity='0';
+  try{g0.setPointerCapture(e.pointerId)}catch(_){}
+  TD={it,pc,g,g0,svg,sx:p0[0],sy:p0[1],ox:pc.x,oy:pc.y,moved:false,id:e.pointerId}},{passive:false});
+document.addEventListener('touchstart',e=>{if(e.target.closest&&e.target.closest('.pc')&&run&&view==='quiz')e.preventDefault()},{passive:false});
+document.addEventListener('touchmove',e=>{if(TD)e.preventDefault()},{passive:false});
+document.addEventListener('pointermove',e=>{if(!TD||e.pointerId!==TD.id)return;const p=tgPt(TD.svg,e),dx=p[0]-TD.sx,dy=p[1]-TD.sy;if(Math.hypot(dx,dy)>.3)TD.moved=true;if(!TD.moved)return;
+  TD.pc.x=clampN(TD.ox+dx,.8,13.2);TD.pc.y=clampN(TD.oy+dy,.8,17.6);TD.g.setAttribute('transform',tgT(TD.pc));e.preventDefault()},{passive:false});
+function tgEnd(e){if(!TD||e.pointerId!==TD.id)return;const d=TD;TD=null;tgDrop(d)}
+document.addEventListener('pointerup',tgEnd);document.addEventListener('pointercancel',tgEnd);
+function tgDrop(d){const it=d.it,pc=d.pc;
+  if(!d.moved){if(it.step){pc.a=(pc.a+it.step)%360}partial();return}
+  let near=null,hit=null;
+  it.tg.forEach(t=>{if(t.taken||t.t!==pc.t||t.f!==pc.f)return;if(Math.hypot(pc.x-t.x,pc.y-t.y)<1.25){near=t;if(tgSame(pc,t)&&!hit)hit=t}});
+  if(hit){hit.taken=true;pc.x=hit.x;pc.y=hit.y;pc.a=hit.a;pc.placed=true;it.st.n++;if(it.st.n===it.tg.length){it.st.done=true;chime()}partial();return}
+  const arr=it.st.p;arr.splice(arr.indexOf(pc),1);arr.push(pc);partial();
+  const m=document.getElementById('tgmsg');if(m&&near)m.textContent=it.step?'거의 맞았어요! 조각을 톡 눌러서 돌려 보세요 🔄':'조금만 더 옮겨 보세요!'}
+const qOf=it=>{const t=T[it.type];return typeof t.q==='function'?t.q(it):t.q};
+const sayOf=it=>T[it.type].say||qOf(it);
+
+/* ===== curriculum (K1~K4: 각 4주 x 5일) ===== */
+const LV={
+ K1:{weeks:['1주 같은 모양','2주 □△○ 알기','3주 색종이 겹치기','4주 개수 세기'],days:[['same'],['copy'],['copy','same'],['same','copy'],['same','copy'],
+  ['paint'],['odd'],['sort'],['paint','odd'],['paint','odd','sort'],
+  ['topmost'],['layers'],['topmost','layers'],['layers','topmost'],['topmost','layers'],
+  ['countOne'],['countAll'],['mostLeast'],['countOne','countAll'],['countOne','countAll','mostLeast']]},
+ K2:{weeks:['1주 입체 모양 알기','2주 선 잇기·분류','3주 쌓기나무','4주 새가 보는 모양'],days:[['sSame'],['sSort'],['sPick'],['sOdd'],['sBuild','sSame','sSort'],
+  ['link'],['oSort'],['link','oSort'],['sSort','oSort'],['link','oSort','sSame'],
+  ['cubeCount'],['cubeCount'],['cubeCmp'],['cubeCmp','cubeCount'],['cubeCount','cubeCmp','sBuild'],
+  ['topView'],['topView'],['topView'],['topView','cubeCount'],['topView','cubeCmp','cubeCount']]},
+ K3:{weeks:['1주 거울 색칠','2주 잘린 조각 잇기','3주 구멍 종이 겹치기','4주 투명 종이 겹치기'],days:[['mirror'],['mirror'],['mirror'],['mirror'],['mirror'],
+  ['fill3'],['fill3'],['fill3'],['fill3'],['fill3','mirror'],
+  ['holes'],['holes'],['holes'],['holes'],['holes','fill3'],
+  ['overlay'],['overlay'],['overlay'],['overlay'],['overlay','holes','mirror']]},
+ K4:{weeks:['1주 칸 세어 넓이','2주 도미노·트리미노','3주 테트로미노','4주 패턴블록'],days:[['area'],['area'],['areaCmp'],['area','areaCmp'],['areaCmp','area'],
+  ['tileCount'],['cantTile'],['tileCount','cantTile'],['cantTile','tileCount'],['tileCount','cantTile','area'],
+  ['tetroSame'],['tetroSame'],['fill4'],['fill4','tetroSame'],['tetroSame','fill4','cantTile'],
+  ['pbHex'],['pbCount'],['pbHex','pbCount'],['pbHex','pbCount'],['pbHex','pbCount','tetroSame']]}};
+function mk(type,seed,l){const it=T[type].gen(RR(mkRng(seed)),l);it.type=type;return it}
+function spread(items,R){ // 같은 유형이 연달아 나오지 않게 섞기
+  let a=R.shuf(items);
+  for(let t=0;t<50;t++){let bad=-1;for(let i=1;i<a.length;i++)if(a[i].type===a[i-1].type){bad=i;break}
+    if(bad<0)break;const j=a.findIndex((x,k)=>k>bad&&x.type!==a[bad-1].type&&(k+1>=a.length||x.type!==a[k+1].type));
+    if(j<0){a=R.shuf(a);continue}[a[bad],a[j]]=[a[j],a[bad]]}
+  return a;
+}
+function buildDay(p,k,dayNo){
+  const days=LV[k].days,all=[...new Set(days.flat())],base=p.name+k+dayNo+Date.now(),R=RR(mkRng(hashStr(base+'x'))),items=[];
+  let l,pool;
+  if(dayNo==='mix'){l=2;pool=all}else{const di=dayNo%5;l=di<2?1:di<4?2:3;pool=days[dayNo]}
+  const known=dayNo==='mix'?all:[...new Set(days.slice(0,dayNo+1).flat())];
+  const types=[];
+  // 오늘 유형 4개 + 다른 유형 4개를 섞어요
+  if(dayNo==='mix'){const sh=R.shuf(all);for(let i=0;i<8;i++)types.push(sh[i%sh.length])}
+  else{
+    for(let i=0;i<4;i++)types.push(pool[i%pool.length]);
+    let others=R.shuf(known.filter(t=>!pool.includes(t)));
+    if(others.length<4)others=others.concat(R.shuf(all.filter(t=>!pool.includes(t)&&!others.includes(t))));
+    if(!others.length)others=R.shuf(pool);
+    for(let i=0;i<4;i++)types.push(others[i%others.length]);
+  }
+  types.forEach((t,i)=>items.push(mk(t,hashStr(base+i),i<4&&dayNo!=='mix'?l:Math.min(l,2))));
+  const out=spread(items,R),kl=Math.min(3,(dayNo==='mix'?2:l)+(k>='K3'?1:0));out.splice(Math.min(4,out.length),0,mk('tangram',hashStr(base+'tg'),kl));return out;
+}
+
+/* ===== cards ===== */
+const CARDS=['토리','보리','하루','나비','콩이','밤이','초코','모모','구름','별이','달이','솜이','두부','고미','라미','마루','보라','사랑','하늘','바다','노을','단비','푸름','여름','가을','겨울','봄이','해님','꿀이','방울','딸기','포도','귤이','수박','감자','고구마','호두','잣이','밤톨','다람'];
+const cardURL=c=>`https://api.dicebear.com/9.x/${c.style}/svg?seed=${encodeURIComponent(c.seed)}`+(c.style==='thumbs'?'&backgroundColor=b6e3f4,ffd5dc,d1f4e0,ffdfbf,e0d5ff':'&backgroundColor=b6e3f4,ffd5dc,d1f4e0');
+function fbURI(seed){const h=hashStr(seed),hue=h%360,r=mkRng(h);const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="hsl(${hue},80%,88%)"/><circle cx="50" cy="52" r="32" fill="hsl(${(hue+40)%360},85%,65%)" stroke="#1D2B53" stroke-width="4"/><circle cx="38" cy="46" r="5" fill="#1D2B53"/><circle cx="62" cy="46" r="5" fill="#1D2B53"/><path d="M38 62 Q50 ${72+Math.floor(r()*6)} 62 62" stroke="#1D2B53" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`;return'data:image/svg+xml;utf8,'+encodeURIComponent(svg)}
+function imgFail(el){el.onerror=null;el.src=fbURI(el.dataset.seed)}
+const cardImg=c=>`<img src="${cardURL(c)}" data-seed="${esc(c.seed)}" alt="${esc(c.seed)}" onerror="imgFail(this)">`;
+function drawCard(p,score){
+  const rare=Math.random()<(score===100?.2:.05),style=rare?'pixel-art':'thumbs';
+  const owned=new Set(p.cards.map(c=>c.seed+c.style)),fresh=CARDS.filter(n=>!owned.has(n+style)),pool=fresh.length?fresh:CARDS;
+  const c={seed:pool[Math.floor(Math.random()*pool.length)],style,rare,date:today()};p.cards.push(c);return c;
+}
+
+/* ===== app state / views ===== */
+let view='home',run=null,newMascot='sq',lastCard=null;
+const app=document.getElementById('app');
+const GUIDE={cheer:['잘했어!','대단해!','딩동댕!','우와, 맞아!'],sad:['괜찮아, 같이 볼까?','아깝다! 정답을 볼까?','다시 한 번 살펴봐요']};
+function speak(t){if(!DB.tts||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+function setLay(){document.documentElement.className='lay-'+DB.lay;document.getElementById('laysw').textContent=DB.lay==='mobile'?'📱 모바일 화면':'🖥 태블릿 화면'}
+function dots(){return`<div class="dots">${run.items.map((_,i)=>`<div class="dot ${run.res[i]===true||run.res[i]==='mini'?'ok':run.res[i]===false?'no':i===run.i?'cur':''}"></div>`).join('')}</div>`}
+
+const V={
+home(){const ps=Object.values(DB.profiles);
+  return`<div class="row c"><h1>🔷 도형 친구들</h1></div>
+  <div class="card"><h2>누가 놀까요?</h2>${ps.map(p=>`<button class="btn white pbtn" data-act="pick" data-n="${esc(p.name)}">${mascot(p.mascot,'happy',54)}<span class="big">${esc(p.name)}</span><span class="small">카드 ${p.cards.length}장</span></button>`).join('')||'<p>아직 친구가 없어요. 새 친구를 만들어요!</p>'}
+  <button class="btn green" data-act="go" data-v="newp">➕ 새 친구 만들기</button></div>`},
+newp(){return`<div class="card"><h2>이름을 알려 주세요</h2><input type="text" id="nm" maxlength="8" placeholder="이름">
+  <h3>함께할 도형 친구</h3><div class="row c">${TYPES.map(t=>`<button class="opt ${newMascot===t?'sel':''}" data-act="nm" data-v="${t}">${mascot(t,'happy',70)}<span>${MNAME[t]}</span></button>`).join('')}</div>
+  <div class="row c" style="margin-top:12px"><button class="btn white" data-act="go" data-v="home">뒤로</button><button class="btn green" data-act="mkp">시작!</button></div></div>`},
+hub(){const p=P(),k=DB.k||'K1',L=LV[k];p.best=p.best||{};
+  const tabs=Object.keys(LV).map(x=>`<button class="btn small ${x===k?'':'white'}" data-act="lv" data-k="${x}">${x}</button>`).join('');
+  const weeks=L.weeks.map((wn,wk)=>`<div class="card"><h3>${wn}</h3><div class="days">${[0,1,2,3,4].map(d=>{const i=wk*5+d,b=p.best[k+'-'+i];return`<button class="dayb ${b!=null?'ok':''}" data-act="day" data-d="${i}">${b!=null?'★':d+1}<small>${b!=null?b+'점':'&nbsp;'}</small></button>`}).join('')}</div></div>`).join('');
+  const total=Object.keys(p.best).length;
+  return`<div class="topbar"><button class="btn small white" data-act="go" data-v="home">← 친구</button><div class="row">${p.cards.length?`<button class="btn small sky" data-act="go" data-v="book">🃏 카드 ${p.cards.length}</button>`:''}<button class="btn small white" data-act="gate">⚙ 부모님</button></div></div>
+  <div class="card"><div class="row">${mascot(p.mascot,'happy',84)}<div><h2>${esc(p.name)}야, 안녕!</h2><div>나는 ${MNAME[p.mascot]}! 하고 싶은 날을 골라 봐. <span class="chip warn">베타: 아무 때나 몇 번이든!</span></div></div></div></div>
+  <div class="row c">${tabs}<button class="btn small green" data-act="mix">🔀 ${k} 섞어서 놀기</button><button class="btn small green" data-act="rand">🎲 아무 날</button></div>
+  <div class="row c" style="margin-top:8px"><b class="jua">🧩 칠교놀이만 하기</b><button class="btn small sky" data-act="tg" data-l="1">1단계</button><button class="btn small sky" data-act="tg" data-l="2">2단계(돌리기)</button><button class="btn small sky" data-act="tg" data-l="3">3단계(실루엣)</button></div>
+  <h2 style="margin:10px 0 0">🗺 ${k} 도형 월드 <span class="small">(완료 ${Object.keys(p.best).filter(x=>x.startsWith(k+'-')&&/-\d+$/.test(x)).length}/20)</span></h2>${weeks}`},
+quiz(){const it=run.items[run.i],T0=T[it.type],fb=run.phase==='fb',rev=fb;
+  let h=`<div class="topbar"><button class="btn small white" data-act="quit">그만하기</button>${dots()}</div><div class="card"><div class="row sb"><span class="chip">${run.k} ${T0.cat}</span>${T0.prov?'<span class="chip warn">연습용 임시 문제</span>':''}<button class="say" data-act="say">🔊</button></div><div class="qtext">${esc(qOf(it))}</div>${T0.view(it,rev)}`;
+  if(T0.mini){h+=`<div class="row c">${it.st.done?`<button class="btn big green" data-act="next">${run.i+1<run.items.length?'다음 ▶':'결과 보기 ★'}</button>`:`<button class="btn small white" data-act="next">건너뛰기 ▶</button>`}</div></div>`;return h}
+  if(!fb)h+=`<div class="row c"><button class="btn big green" data-act="check" ${T0.can(it)?'':'disabled'}>확인</button></div>`;
+  else{const ok=run.res[run.i];h+=`<div class="fb ${ok?'ok':'no'}"><div class="m">${mascot(P().mascot,ok?'happy':'sad',70)}</div><div><div class="big">${ok?run.msg:'아쉬워요! '+run.msg}</div>${ok?'':`<div>${esc(T0.exp(it))}</div>`}</div></div><div class="row c"><button class="btn big" data-act="next">${run.i+1<run.items.length?'다음 ▶':'결과 보기 ★'}</button></div>`}
+  return h+'</div>'},
+result(){const p=P(),ok=run.res.filter(x=>x===true).length,tot=run.items.filter(i=>!T[i.type].mini).length,sc=tot?Math.round(ok/tot*100):100;
+  return`<div class="card" style="text-align:center"><h1>${sc>=80?'🎉 최고야!':sc>=50?'👍 잘했어!':'💪 다음엔 더 잘할 거야!'}</h1>${mascot(p.mascot,'happy',90)}<h2>${tot?`${tot}문제 중 ${ok}개 맞았어요 (${sc}점)`:'칠교 완성!'}</h2>${run.res.includes('mini')&&run.items.some(i=>i.type==='tangram'&&i.st.done)?'<div>🧩 칠교놀이도 완성했어요!</div>':''}
+  <p>카드를 눌러서 뒤집어 보세요!</p><div class="reveal" id="rv"><div class="aura" id="au"></div><div class="flip" id="fl" data-act="flipcard"><div class="face front">?</div><div class="face back" id="bk"></div></div></div><div class="row c late" id="rb" style="display:none"><button class="btn big green" data-act="again">🔁 한 번 더</button><button class="btn white" data-act="go" data-v="hub">돌아가기</button><button class="btn sky" data-act="go" data-v="book">🃏 카드북</button></div></div>`},
+book(){const p=P(),have=p.cards.length;return`<div class="topbar"><button class="btn small white" data-act="go" data-v="hub">← 돌아가기</button><h2>🃏 카드북 ${have}/${CARDS.length}</h2></div><div class="card"><div class="book">${p.cards.slice().reverse().map(c=>`<div class="stk ${c.rare?'rare':''}">${cardImg(c)}<div class="jua">${esc(c.seed)}${c.rare?' ✨':''}</div></div>`).join('')}${Array.from({length:Math.max(0,Math.min(6,CARDS.length-have))},()=>'<div class="stk empty">?</div>').join('')}</div></div>`},
+parent(){const p=P();return`<div class="topbar"><button class="btn small white" data-act="go" data-v="hub">← 돌아가기</button><h2>부모님 설정</h2></div>
+  <div class="card"><h3>설정</h3><div class="row"><button class="btn small white" data-act="tts">문제 읽어주기: ${DB.tts?'켜짐':'꺼짐'}</button><button class="btn small white" data-act="lay">화면: ${DB.lay==='mobile'?'모바일':'태블릿'}</button></div>
+  <h3>기록</h3><div class="hist">${Object.entries(p.best||{}).sort().map(([d,s])=>`${d} : ${s}점`).join('<br>')||'아직 기록이 없어요'}</div>
+  <div class="row" style="margin-top:12px"><button class="btn small white" data-act="rtoday">점수 기록 지우기</button><button class="btn small" style="background:var(--coral);color:#fff" data-act="delp">이 친구 삭제</button></div>
+  <p class="small">베타 버전: 하루 제한 없이 모든 문제를 풀 수 있어요. 카드 이미지: DiceBear thumbs · pixel-art (CC0). 인터넷이 없으면 기본 그림이 나와요. 이 앱은 가정용으로 만든 비공개 학습 앱이에요.</p></div>`}
+};
+function render(){setLay();app.innerHTML=V[view]();window.scrollTo(0,0);
+  if(view==='quiz'&&run.phase==='ask')speak(sayOf(run.items[run.i]));}
+function partial(){const y=scrollY;app.innerHTML=V[view]();scrollTo(0,y)}
+
+/* ===== actions ===== */
+function chime(){try{const a=new (window.AudioContext||window.webkitAudioContext)();[784,988,1319].forEach((f,i)=>{const o=a.createOscillator(),g=a.createGain();o.frequency.value=f;o.type='triangle';o.connect(g);g.connect(a.destination);const t=a.currentTime+i*.12;g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+.5);o.start(t);o.stop(t+.5)})}catch(e){}}
+function sparkle(box){for(let i=0;i<18;i++){const s=document.createElement('span');s.className='spk burst';s.textContent=['⭐','✨','🌟'][i%3];const a=i/18*Math.PI*2,d=110+Math.random()*60;s.style.cssText=`left:50%;top:50%;--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px;animation-delay:${Math.random()*.3}s`;box.appendChild(s)}}
+const A={
+ go(d){view=d.v;render()},
+ pick(d){DB.cur=d.n;save();view='hub';render()},
+ nm(d){const v=document.getElementById('nm');const keep=v?v.value:'';newMascot=d.v;render();const n=document.getElementById('nm');if(n)n.value=keep},
+ mkp(){const n=(document.getElementById('nm').value||'').trim();if(!n){alert('이름을 써 주세요');return}if(DB.profiles[n]){alert('이미 있는 이름이에요');return}
+  DB.profiles[n]={name:n,mascot:newMascot,cards:[],done:{},start:0};DB.cur=n;save();view='hub';render()},
+ lv(d){DB.k=d.k;save();render()},
+ day(d){const p=P(),k=DB.k||'K1',dn=d.d==='mix'?'mix':+d.d;run={k,dayNo:dn,items:buildDay(p,k,dn),i:0,res:[],phase:'ask',msg:''};view='quiz';render()},
+ rand(){A.day({d:Math.floor(Math.random()*20)})},
+ mix(){A.day({d:'mix'})},
+ tg(d){const p=P();run={k:DB.k||'K1',dayNo:'tg'+d.l,items:[mk('tangram',hashStr(p.name+Date.now()),+d.l)],i:0,res:[],phase:'ask',msg:''};view='quiz';render()},
+ again(){const dn=String(run.dayNo);dn.startsWith('tg')?A.tg({l:dn.slice(2)}):A.day({d:run.dayNo})},
+ tap(d){const it=run.items[run.i];if(run.phase!=='ask')return;T[it.type].tap(it,d.v);partial()},
+ check(){const it=run.items[run.i];if(!T[it.type].can(it))return;const ok=!!T[it.type].ok(it);run.res[run.i]=ok;run.msg=(ok?GUIDE.cheer:GUIDE.sad)[run.i%3];run.phase='fb';partial();speak(ok?run.msg:run.msg+' '+T[it.type].exp(it))},
+ next(){if(T[run.items[run.i].type].mini)run.res[run.i]='mini';if(run.i+1<run.items.length){run.i++;run.phase='ask';render()}else{finish()}},
+ say(){speak(sayOf(run.items[run.i]))},
+ quit(){if(confirm('그만할까요?')){run=null;view='hub';render()}},
+ flipcard(){const f=document.getElementById('fl');if(!f||f.dataset.d)return;f.dataset.d=1;f.classList.add('spin');
+  setTimeout(()=>{f.classList.remove('spin');f.classList.add('on');document.getElementById('au').classList.add('on');sparkle(document.getElementById('rv'));chime();const b=document.getElementById('rb');b.style.display='flex'},1900)},
+ gate(){const a=2+Math.floor(Math.random()*8),b=3+Math.floor(Math.random()*7);const r=prompt(`부모님 확인: ${a} × ${b} = ?`);if(r!==null&&+r===a*b){view='parent';render()}},
+ sd(d,el){P().start=+el.value;save()},
+ tts(){DB.tts=!DB.tts;save();render()},
+ lay(){DB.lay=DB.lay==='mobile'?'tablet':'mobile';save();render()},
+ rtoday(){if(confirm('점수 기록을 지울까요?')){P().best={};save();render()}},
+ delp(){if(confirm('정말 삭제할까요? 카드도 모두 사라져요.')){delete DB.profiles[DB.cur];DB.cur=null;save();view='home';render()}}
+};
+function finish(){const p=P(),ok=run.res.filter(x=>x===true).length,tot=run.items.filter(i=>!T[i.type].mini).length,sc=tot?Math.round(ok/tot*100):100,key=run.k+'-'+run.dayNo;p.best=p.best||{};
+  p.best[key]=Math.max(p.best[key]||0,sc);lastCard=drawCard(p,sc);save();view='result';render();
+  document.getElementById('bk').innerHTML=cardImg(lastCard)+`<div class="jua">${esc(lastCard.seed)}${lastCard.rare?' ✨희귀!':''}</div>`}
+app.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const f=A[el.dataset.act];if(f)f(el.dataset,el)});
+document.getElementById('laysw').onclick=()=>{DB.lay=DB.lay==='mobile'?'tablet':'mobile';save();render()};
+if(DB.cur&&!DB.profiles[DB.cur])DB.cur=null;
+render();
+</script>
+</body>
+</html>
